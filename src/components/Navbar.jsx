@@ -16,11 +16,11 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  position: ${(props) => (props.header == true ? "absolute" : "none")};
+  position: ${(props) => (props.header === true ? "absolute" : "none")};
   z-index: 5;
   width: 100%;
   background-color: ${(props) =>
-    props.header == true ? "rgba(0, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.9)"};
+    props.header === true ? "rgba(0, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.9)"};
   padding: 2rem 5rem;
 `;
 
@@ -94,7 +94,7 @@ const Navbar = (props) => {
           <AnchorLink
             linkTo="/"
             passedClassName="fs-500 nav-link"
-            children="MAY&M"
+            children="M&M"
           />
           <List>
             <ListItem>
@@ -111,13 +111,6 @@ const Navbar = (props) => {
                 children="NEW ARRIVALS"
               />
             </ListItem>
-            <ListItem>
-              <AnchorLink
-                linkTo="/about"
-                passedClassName="nav-link"
-                children="ABOUT"
-              />
-            </ListItem>
           </List>
         </Div>
         <Div>
@@ -125,7 +118,7 @@ const Navbar = (props) => {
             <ListItem>
               {user.token ? (
                 <AnchorLink
-                  linkTo="/profile"
+                  linkTo="/settings"
                   passedClassName="nav-link"
                   children={<PersonOutlineOutlinedIcon />}
                 />

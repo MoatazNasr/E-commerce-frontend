@@ -140,7 +140,7 @@ select {
   cursor: pointer;
 }
 .nav-link:hover{
-  color: #f3b2c2;  
+  color: #c1e8ea;  
 }
 /* status-message */
 .status-message {
@@ -205,7 +205,7 @@ export const Button = styled.button`
   cursor: pointer;
   transition: 0.5s all;
   &:hover {
-    color: #f3b2c2;
+    color: #c1e8ea;
     transform: scale(105%);
   }
 `;

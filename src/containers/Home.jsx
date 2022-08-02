@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <Header />
       <Categories />
-      {/* <Collection/> */}
+      <Collection/>
       <Newsletter/>
      <Footer/>
     </>

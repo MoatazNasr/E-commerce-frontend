@@ -36,8 +36,7 @@ const BTN = styled(Button)`
 const OrderSummary = ({cart}) => {
   const [total, setTotal] = useState(0);
   useEffect(() => {
-    const tempTotal = cartTotal(cart);
-    setTotal(tempTotal);
+    setTotal(cartTotal());
   },[cart]);
   return (
     <Div>

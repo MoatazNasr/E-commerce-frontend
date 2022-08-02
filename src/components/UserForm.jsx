@@ -12,7 +12,7 @@ const Div = styled.div`
   top:175px;
   right: ${(props) => (props.appear ? "0%" : "-100%")};
   background: white;
-  padding: 5rem 6rem;
+  padding: 5rem;
   border-radius: 0.2rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
   z-index: 1;

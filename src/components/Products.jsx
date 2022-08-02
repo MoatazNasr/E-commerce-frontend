@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import ShopProduct from "./ShopProduct";
 import styled from "styled-components";
 import axios from "axios";
@@ -51,7 +51,13 @@ const Products = () => {
     <section>
       <ProductsList>
         {filteredProducts.map((product, key) => (
-          <ShopProduct key={key + Math.random()} product={product} />
+          <Fragment key={key + Math.random()}>
+            {location.pathname === "/shop" ? (
+              <>{!product.new && <ShopProduct product={product} />}</>
+            ) : (
+              <>{product.new && <ShopProduct product={product} />}</>
+            )}
+          </Fragment>
         ))}
       </ProductsList>
     </section>

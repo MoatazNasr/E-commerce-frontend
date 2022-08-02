@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { publicRequest, userRequest } from "../utils/apiCallMethods.js";
-import productQuantity from "../utils/productQuantity.js";
+import checkProductInCart from "../utils/checkProductInCart.js";
 import { setSuccessfulMessage } from "./successfulMessageSlice.js";
 import { setErrorMessage } from "./errorMessageSlice.js";
 export const createUserCart = createAsyncThunk(
   "user/cart",
   (userID, thunkApi) => {
-    publicRequest.post("/cart", {
-      userID,
-    });
+    publicRequest
+      .post("/cart", {
+        userID,
+      })
+      .then(() => {
+        window.localStorage.setItem("cartProducts", []);
+      });
   }
 );
 
@@ -18,6 +22,22 @@ export const getUserCart = createAsyncThunk(
     const { token, id } = user;
     const api = userRequest(token);
     api.get(`/cart/${id}`).then((res) => {
+      if (!window.localStorage.getItem("cartProducts")) {
+        window.localStorage.setItem(
+          "cartProducts",
+          JSON.stringify(
+            res.data.products.map((product) => {
+              return {
+                productID: product.productID,
+                quantity: product.quantity,
+                selectedSize: product.selectedSize,
+                selectedColor: product.selectedColor,
+                price: product.price,
+              };
+            })
+          )
+        );
+      }
       thunkApi.dispatch(
         addToCart({
           userID: id,
@@ -36,62 +56,61 @@ export const addProductToCart = createAsyncThunk(
     const { token, id } = state.user;
     const { products, cartID } = state.cart;
     const api = userRequest(token);
-    const incProductQuantity = productQuantity(products, product);
+    const truthyValue = checkProductInCart(products, product);
     let tempProducts = [];
-    if (incProductQuantity.quantityChanged) {
-      tempProducts = incProductQuantity.newProducts;
+    let localProducts = JSON.parse(window.localStorage.getItem("cartProducts"));
+    if (truthyValue) {
+      localProducts = localProducts.map((productX) => {
+        if (
+          productX.productID === product._id &&
+          productX.selectedSize === product.selectedSize &&
+          productX.selectedColor === product.selectedColor
+        ) {
+          productX.quantity += 1;
+        }
+        return productX;
+      });
+      window.localStorage.setItem(
+        "cartProducts",
+        JSON.stringify(localProducts)
+      );
+      thunkApi.dispatch(setSuccessfulMessage("Product added to cart !!"));
     } else {
       tempProducts.push({ ...product, productID: product._id });
       tempProducts = products.concat(tempProducts);
+      api
+        .put(`/cart/${cartID}/${id}`, {
+          userID: id,
+          products: tempProducts,
+        })
+        .then((res) => {
+          localProducts.push({
+            productID: product._id,
+            quantity: 1,
+            selectedSize: product.selectedSize,
+            selectedColor: product.selectedColor,
+            price: product.price,
+          });
+          window.localStorage.setItem(
+            "cartProducts",
+            JSON.stringify(localProducts)
+          );
+          thunkApi.dispatch(
+            addToCart({
+              userID: id,
+              cartID: res.data._id,
+              products: res.data.products,
+            })
+          );
+          thunkApi.dispatch(setSuccessfulMessage("Product added to cart !!"));
+        })
+        .catch(() => {
+          thunkApi.dispatch(setErrorMessage("Try again !!"));
+        });
     }
-    api
-      .put(`/cart/${cartID}/${id}`, {
-        userID: id,
-        products: tempProducts,
-      })
-      .then((res) => {
-        thunkApi.dispatch(
-          addToCart({
-            userID: id,
-            cartID: res.data._id,
-            products: res.data.products,
-          })
-        );
-        thunkApi.dispatch(setSuccessfulMessage("Product added to cart !!"));
-      })
-      .catch(() => {
-        thunkApi.dispatch(setErrorMessage("Try again !!"));
-      });
   }
 );
 
-export const productQuantityInCart = createAsyncThunk(
-  "quantityofaproduct/cart",
-  (product, thunkApi) => {
-    const state = thunkApi.getState();
-    const { id ,token} = state.user;
-    const { products, cartID } = state.cart;
-    const api = userRequest(token);
-    const tempProducts = products.map((productX) => {
-      let immutableProduct = Object.assign({}, productX);
-      if (
-        productX.productID === product.id &&
-        productX.selectedSize === product.size &&
-        productX.selectedColor === product.color
-      ) {
-        immutableProduct.quantity = product.productQuantity;
-      }
-      return immutableProduct;
-    });
-    thunkApi.dispatch(
-      addToCart({
-        userID: id,
-        cartID: cartID,
-        products: tempProducts,
-      })
-    );
-  }
-);
 
 export const removeProductFromCart = createAsyncThunk(
   "removefrom/cart",
@@ -101,9 +120,21 @@ export const removeProductFromCart = createAsyncThunk(
     const { cartID } = state.cart;
     const { productID, size, color } = product;
     const api = userRequest(token);
+    let localProducts = JSON.parse(window.localStorage.getItem("cartProducts"));
     api
       .delete(`/cart/${cartID}/${productID}/${size}/${color}/${id}`)
       .then((res) => {
+        localProducts = localProducts.filter(
+          (productX) =>
+          productX.productID !== productID &&
+          productX.selectedSize !== size &&
+          productX.selectedColor !== color
+        );
+        console.log(localProducts)
+        window.localStorage.setItem(
+          "cartProducts",
+          JSON.stringify(localProducts)
+        );
         thunkApi.dispatch(
           removeFromCart({
             userID: res.data.userID,
@@ -112,9 +143,10 @@ export const removeProductFromCart = createAsyncThunk(
           })
         );
         thunkApi.dispatch(setSuccessfulMessage("Product removed from cart !!"));
-      }).catch(()=>{
-        thunkApi.dispatch(setErrorMessage("Try again !!"));
       })
+      .catch(() => {
+        thunkApi.dispatch(setErrorMessage("Try again !!"));
+      });
   }
 );
 

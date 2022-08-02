@@ -50,7 +50,7 @@ const Down = keyframes`
     top:-100rem;
   }
   to {
-    top:10rem;
+    top:0rem;
   }
 `;
 const Up = keyframes`
@@ -61,12 +61,15 @@ const Up = keyframes`
     top:-100rem;
   }
 `;
+const Section = styled.section`
+  position:relative ;
+`;
 const Div = styled.div`
   position: absolute;
   background: white;
   z-index: 1;
   left: 0;
-  top: 10rem;
+  top: 0rem;
   height: max-content;
   width: 100%;
   display: flex;
@@ -129,7 +132,7 @@ const Filters = () => {
     }
   },[]);
   return (
-    <section>
+    <Section>
       {filter ? (
         <>
           <Div animation={animation}>
@@ -178,7 +181,7 @@ const Filters = () => {
           <FilterListOutlinedIcon />
         </BTN>
       )}
-    </section>
+    </Section>
   );
 };
 

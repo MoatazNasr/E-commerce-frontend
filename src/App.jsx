@@ -5,9 +5,10 @@ import Shop from "./containers/Shop";
 import Wishlist from "./containers/Wishlist";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
+import NewArrivals from "./containers/NewArrivals";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import Product from "./containers/Product";
-import Profile from "./containers/Profile";
+import Settings from "./containers/Settings";
 import { useSelector, useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import { setErrorMessage } from "./redux/errorMessageSlice";
@@ -36,8 +37,9 @@ function App() {
       <GlobalStyles />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/newarrivals" element={<NewArrivals />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />

@@ -11,7 +11,7 @@ import CopyrightOutlinedIcon from "@mui/icons-material/CopyrightOutlined";
 import AnchorLink from "./AnchorLink";
 const FooterX = styled.footer`
   margin-top: 5rem;
-  background: rgba(243, 178, 194, 0.4);
+  background: #c1e8ea;
   font-family: ${(props) => props.fontFamily};
 `;
 

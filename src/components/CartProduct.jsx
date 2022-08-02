@@ -6,10 +6,7 @@ import { Button } from "../styles/GlobalStyles";
 import AnchorLink from "./AnchorLink";
 import { useDispatch } from "react-redux";
 
-import {
-  removeProductFromCart,
-  productQuantityInCart,
-} from "../redux/cartSlice";
+import { removeProductFromCart } from "../redux/cartSlice";
 const Product = styled.div`
   /* &:where(:not(:nth-of-type(1))) {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
@@ -78,8 +75,8 @@ const ProductDetailsBTN = styled(BTN)`
 `;
 const RemoveFromCart = styled(ProductDetailsBTN)``;
 
-const CartProduct = ({ id, title, color, size, price, imgSrc, quantity ,cart}) => {
-  let [productQuantity, setProductQuantity] = useState(quantity);
+const CartProduct = ({ id, title, color, size, price, imgSrc }) => {
+  let [productQuantity, setProductQuantity] = useState(1);
   const dispatch = useDispatch();
   const incproductQuantity = () => {
     setProductQuantity((prevQuan) => {
@@ -98,11 +95,13 @@ const CartProduct = ({ id, title, color, size, price, imgSrc, quantity ,cart}) =
     dispatch(removeProductFromCart({ productID: id, size, color }));
   };
   useEffect(() => {
-    dispatch(productQuantityInCart({ id, productQuantity, size, color }));
+    const products = JSON.parse(window.localStorage.getItem("cartProducts"));
+    products.forEach((product) => {
+      if (product.productID === id) {
+        setProductQuantity(product.quantity);
+      }
+    });
   }, [productQuantity]);
-  useEffect(() => {
-    setProductQuantity(quantity);
-  }, [cart]);
   return (
     <>
       <Product>

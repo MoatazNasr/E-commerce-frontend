@@ -31,10 +31,11 @@ const Signup = ({ handleSignin }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormData({ password: password, email: email, username: username });
+    setFormData({ password: password, email: email, username: username ,phoneNumber });
   };
   useEffect(() => {
     if (formData) {
@@ -78,12 +79,21 @@ const Signup = ({ handleSignin }) => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <InputLabel
+          placeholder="Phone Number"
+          type="text"
+          id="phonenumber"
+          name="phonenumber"
+          value={phoneNumber}
+          required={true}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <InputLabel
           placeholder="Password"
           type="password"
           id="password"
           name="password"
           value={password}
-          maxLength={8}
+          minLength={8}
           required={true}
           onChange={(e) => setPassword(e.target.value)}
         />
