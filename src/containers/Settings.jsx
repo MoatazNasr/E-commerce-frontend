@@ -8,7 +8,6 @@ import { Button } from "../styles/GlobalStyles";
 import { useDispatch } from "react-redux";
 import { signoutUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
-import Wallet from '../components/Wallet';
 import Orders from '../components/Orders';
 const BTN = styled(Button)`
   width: 100%;
@@ -57,7 +56,6 @@ color: black;
 `;
 const Settings = () => {
   const [userData, setUserData] = useState(true);
-  const [walletData,setWalletData] = useState(false);
   const [changePassword,setChangePassword] = useState(false);
   const [orders,setOrders] = useState(false);
   const dispatch = useDispatch();
@@ -67,27 +65,18 @@ const Settings = () => {
     navigate(-1);
   };
   const handlePagination = (paginationValue)=>{
-    if(paginationValue === 'wallet') {
+     if (paginationValue === 'orders') {
       setUserData(false);
-      setWalletData(true);
-      setChangePassword(false);
-      setOrders(false);
-    }
-    else if (paginationValue === 'orders') {
-      setUserData(false);
-      setWalletData(false);
       setChangePassword(false);
       setOrders(true);
     }
     else if (paginationValue === 'password') {
-      setUserData(false);
-      setWalletData(false);
+      setUserData(false);    
       setChangePassword(true);
       setOrders(false);
     }
     else {
       setUserData(true);
-      setWalletData(false);
       setChangePassword(false);
       setOrders(false);
     }
@@ -109,17 +98,12 @@ const Settings = () => {
           <BTN onClick={() => handlePagination('orders')}>Orders</BTN>
           </li>
           <li>
-          <BTN onClick={() => handlePagination('wallet')}>Wallet</BTN>
-          </li>
-          <li>
             <BTN onClick={handleClick}>Log out</BTN>
           </li>
         </ul>
-        {userData && !changePassword && !orders && !walletData && <UserData />}
-        {!userData && changePassword && !orders && !walletData && <UserPassword />}
-        {!userData && !changePassword && orders && !walletData && <Orders />}
-        {!userData && !changePassword && !orders && walletData && <Wallet />}
-
+        {userData && !changePassword && !orders && <UserData />}
+        {!userData && changePassword && !orders && <UserPassword />}
+        {!userData && !changePassword && orders && <Orders />}
       </section>
     </Main>
   );

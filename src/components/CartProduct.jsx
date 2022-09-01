@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Button } from "../styles/GlobalStyles";
 import AnchorLink from "./AnchorLink";
 import { useDispatch } from "react-redux";
-
 import { removeProductFromCart } from "../redux/cartSlice";
 const Product = styled.div`
-  /* &:where(:not(:nth-of-type(1))) {
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-  } */
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr;
   & img {
@@ -75,13 +69,23 @@ const ProductDetailsBTN = styled(BTN)`
 `;
 const RemoveFromCart = styled(ProductDetailsBTN)``;
 
-const CartProduct = ({ id, title, color, size, price, imgSrc }) => {
-  let [productQuantity, setProductQuantity] = useState(1);
+const CartProduct = ({
+  cart,
+  id,
+  title,
+  color,
+  size,
+  price,
+  imgSrc,
+  setChangeOrderSummary,
+}) => {
+  let [productQuantity, setProductQuantity] = useState(0);
   const dispatch = useDispatch();
   const incproductQuantity = () => {
     setProductQuantity((prevQuan) => {
       return prevQuan + 1;
     });
+    setChangeOrderSummary((prevValue) => !prevValue);
   };
   const decproductQuantity = () => {
     setProductQuantity((prevQuan) => {
@@ -90,18 +94,43 @@ const CartProduct = ({ id, title, color, size, price, imgSrc }) => {
         return prevQuan - 1;
       }
     });
+    setChangeOrderSummary((prevValue) => !prevValue);
   };
   const handleRemoveFromtCart = () => {
-    dispatch(removeProductFromCart({ productID: id, size, color }));
+    dispatch(
+      removeProductFromCart({
+        productID: id,
+        selectedSize: size,
+        selectedColor: color,
+      })
+    );
   };
   useEffect(() => {
-    const products = JSON.parse(window.localStorage.getItem("cartProducts"));
-    products.forEach((product) => {
-      if (product.productID === id) {
-        setProductQuantity(product.quantity);
-      }
-    });
-  }, [productQuantity]);
+    let products = JSON.parse(window.localStorage.getItem("cartProducts"));
+    if (productQuantity === 0) {
+      products.forEach((product) => {
+        if (
+          product.productID === id &&
+          product.selectedSize === size &&
+          product.selectedColor === color
+        ) {
+          if (product.quantity > 1) setProductQuantity(product.quantity);
+          else setProductQuantity(1);
+        }
+      });
+    } else {
+      products.forEach((product) => {
+        if (
+          product.productID === id &&
+          product.selectedSize === size &&
+          product.selectedColor === color
+        ) {
+          product.quantity = productQuantity;
+        }
+      });
+      window.localStorage.setItem("cartProducts", JSON.stringify(products));
+    }
+  }, [productQuantity,cart]);
   return (
     <>
       <Product>
@@ -130,7 +159,7 @@ const CartProduct = ({ id, title, color, size, price, imgSrc }) => {
         </Details>
         <Transfer>
           <RemoveFromCart onClick={() => handleRemoveFromtCart()}>
-            <DeleteOutlineOutlinedIcon />
+          <img src='../../assets/icons/close-circle-outline.svg' className="icons"/>
           </RemoveFromCart>
           <ProductDetailsBTN>
             <AnchorLink
@@ -138,7 +167,7 @@ const CartProduct = ({ id, title, color, size, price, imgSrc }) => {
               passedClassName="nav-link"
               children={
                 <>
-                  <LinkOutlinedIcon />
+                  <img src='../../assets/icons/navigate-outline.svg' className="icons"/>
                 </>
               }
             />

@@ -6,12 +6,14 @@ const filtersSlice = createSlice({
         colors: [],
         sizes: [],
         prices: [],
+        categories: null
     },
     reducers: {
         updateFilters: (state, action) => {
             state.colors = action.payload.colorState;
             state.sizes = action.payload.sizeState;
             state.prices = action.payload.priceState;
+            state.categories = action.payload.categoriesState;
         },
     }
 });

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import AnchorLink from "./AnchorLink";
 const Product = styled.li`
   position: relative;
@@ -23,7 +22,10 @@ const Details = styled.div`
     margin: 0 auto;
   }
   & a {
-      color:black;
+    color: black;
+  }
+  & img {
+    margin-bottom:1rem;
   }
 `;
 const WishlistProduct = ({ title, price, imgSrc, id }) => {
@@ -38,7 +40,13 @@ const WishlistProduct = ({ title, price, imgSrc, id }) => {
         <AnchorLink
           linkTo={`/product/${id}`}
           passedClassName="nav-link"
-          children={<LinkOutlinedIcon />}
+          children={
+            <img
+              src="../../assets/icons/navigate-outline.svg"
+              className="icons"
+              alt='navigate-icon'
+            />
+          }
         />{" "}
       </Details>
     </Product>

@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../components/Header';
 import Products from '../components/Products';
-import Filters from '../components/Filters';
+import ColorSizePriceFilters from '../components/ColorSizePriceFilters';
 import Footer from '../components/Footer';
 
 const NewArrivals = () => {
   return (
     <div>
         <Header />
-        <Filters/>
+        <ColorSizePriceFilters/>
         <Products/>
         <Footer/>
     </div>

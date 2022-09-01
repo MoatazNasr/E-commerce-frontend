@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { userRequest } from "../utils/apiCallMethods";
-import { useSelector, useDispatch } from "react-redux";
-import { Button } from "../styles/GlobalStyles";
+import { useSelector } from "react-redux";
 import AnchorLink from "./AnchorLink";
-import { refundUserMoney } from "../redux/userSlice";
-
-const BTN = styled(Button)`
-  position: relative;
-  top: -0.1rem;
-  z-index: 5;
-  border-radius: 0.2rem;
-  box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
-  color: white;
-  background: black;
-  padding: 0.5rem 1.5rem;
-  &:hover {
-    background: white;
-  }
-`;
 const Div = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1fr 1fr;
@@ -68,18 +52,9 @@ const Li = styled.li`
     }
   }
 `;
-const OrderStatus = styled.span`
-  color: ${(props) =>
-    props.status === "pending"
-      ? "rgba(0,0,255,0.75)"
-      : props.status === "canceled"
-      ? "rgba(255,0,0,0.75)"
-      : "rgb(13, 176, 13)"};
-`;
 const Orders = () => {
   const { id, token } = useSelector((state) => state.user);
   const [orders, setOrders] = useState([]);
-  const dispatch = useDispatch();
   const api = userRequest(token);
   const handleSetImage = (product) => {
     let image = "";
@@ -93,26 +68,6 @@ const Orders = () => {
       setOrders(res.data);
     });
   }, []);
-  const handleButtonClick = (order) => {
-    const { _id } = order;
-    api
-      .put(`/order/${_id}/${id}`, {
-        ...order,
-        status: "canceled",
-      })
-      .then((res) => {
-        setOrders(
-          orders.map((order) => {
-            const tempOrder = Object.assign({}, order);
-            if (order._id === _id) {
-              tempOrder.status = "canceled";
-            }
-            return tempOrder;
-          })
-        );
-        dispatch(refundUserMoney(order.amount + 10));
-      });
-  };
   return (
     <Ul>
       {orders.length === 0 && <h1>No Orders </h1>}
@@ -157,15 +112,13 @@ const Orders = () => {
           </div>
           <Div3>
             <p>
-              <span>Order Status</span>:
-              <OrderStatus status={order.status}> {order.status}</OrderStatus>
+              <span>Order Date</span>: {order.updatedAt.split("-")[0]}/
+              {order.updatedAt.split("-")[1]}/
+              {order.updatedAt.split("-")[2].split(":")[0].split("T")[0]}
             </p>
             <p>
               <span>Total</span>: ${order.amount + 10}
             </p>
-            {order.status !== "canceled" && order.status !== "delivered"&&  (
-              <BTN onClick={() => handleButtonClick(order)}>Cancel Order</BTN>
-            )}
           </Div3>
         </Li>
       ))}

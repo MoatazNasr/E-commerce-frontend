@@ -1,41 +1,37 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import Badge from "@mui/material/Badge";
 import AnchorLink from "./AnchorLink";
 import { Button } from "../styles/GlobalStyles";
 import UserForm from "../components/UserForm";
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setErrorMessage } from "../redux/errorMessageSlice";
 const Nav = styled.nav`
   font-family: ${(props) => props.fontFamily};
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
-  position: ${(props) => (props.header === true ? "absolute" : "none")};
+  background-color: white ;
+  position: ${(props) => (props.header === true ? "fixed" : "none")};
   z-index: 5;
   width: 100%;
-  background-color: ${(props) =>
-    props.header === true ? "rgba(0, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.9)"};
-  padding: 2rem 5rem;
+  padding: 1.5rem 0;
+  box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5);
+  & div:nth-of-type(1) {
+    text-align: left;
+  }
+  & div:nth-of-type(2) {
+    text-align: left;
+  }
 `;
 
 const Div = styled.div`
-  color: white;
   &:nth-of-type(3) li:hover {
     transform: scale(115%);
   }
   &:nth-of-type(2) ul li {
     margin: 0 1rem;
-  }
-  &:nth-of-type(2) {
-    position: relative;
-    top: 1rem;
-    left: -2rem;
   }
 `;
 const List = styled.ul`
@@ -51,12 +47,20 @@ const ListItem = styled.li`
   & .inline {
     display: inline;
   }
+  & a {
+    text-decoration: none;
+    color: black;
+    transition: 0.5s all;
+    cursor: pointer;
+    &:hover{
+      color: hsl(353, 100%, 78%);  
+    }
+  }
 `;
 const BTN = styled(Button)`
   padding: 0;
   display: flex;
   align-items: center;
-  color: white;
   & .icon {
     margin-left: 0.5rem;
   }
@@ -76,38 +80,30 @@ const Navbar = (props) => {
   return (
     <>
       <Nav
-        className="fs-300"
+        className="fs-400"
         fontFamily="Shadows Into Light, cursive"
         header={props.header}
       >
-        <Div>
-          <List>
-            <ListItem className="fs-400">
-              <BTN className="nav-link">
-                We Got Your Desire
-                <SearchOutlinedIcon className="icon" />
-              </BTN>
-            </ListItem>
-          </List>
+        <Div className="fs-400">
+          MAY&M <br /> Women's fashion with passion
         </Div>
         <Div>
-          <AnchorLink
-            linkTo="/"
-            passedClassName="fs-500 nav-link"
-            children="M&M"
-          />
           <List>
             <ListItem>
               <AnchorLink
+                linkTo="/"
+                children="HOME"
+              />
+            </ListItem>
+            <ListItem>
+              <AnchorLink
                 linkTo="/shop"
-                passedClassName="nav-link"
                 children="SHOP"
               />
             </ListItem>
             <ListItem>
               <AnchorLink
                 linkTo="/newarrivals"
-                passedClassName="nav-link"
                 children="NEW ARRIVALS"
               />
             </ListItem>
@@ -120,11 +116,21 @@ const Navbar = (props) => {
                 <AnchorLink
                   linkTo="/settings"
                   passedClassName="nav-link"
-                  children={<PersonOutlineOutlinedIcon />}
+                  children={
+                    <img
+                      src="../../assets/icons/person-outline.svg"
+                      className='icons'
+                      alt="wishlist-icon"
+                    />
+                  }
                 />
               ) : (
                 <BTN className="nav-link inline" onClick={() => showLogin()}>
-                  <PersonOutlineOutlinedIcon />
+                  <img
+                    src="../../assets/icons/person-outline.svg"
+                    className='icons'
+                    alt="wishlist-icon"
+                  />
                 </BTN>
               )}
             </ListItem>
@@ -138,21 +144,33 @@ const Navbar = (props) => {
                       badgeContent={wishlist.products.length}
                       sx={{
                         "& .MuiBadge-badge": {
-                          backgroundColor: "transparent",
+                          backgroundColor: "hsl(353, 100%, 78%)",
                           color: "white",
+                          marginRight:'-6px'    
                         },
                       }}
                     >
-                      <FavoriteBorderIcon />
+                      <img
+                        src="../../assets/icons/heart-outline.svg"
+                        alt="wishlist-icon"
+                        className='icons'
+                        
+                      />
                     </Badge>
                   }
                 />
               ) : (
                 <BTN
-                  onClick={() => dispatch(setErrorMessage("Please login to continue !!"))}
+                  onClick={() =>
+                    dispatch(setErrorMessage("Please login to continue !!"))
+                  }
                 >
                   {" "}
-                  <FavoriteBorderIcon />
+                  <img
+                    src="../../assets/icons/heart-outline.svg"
+                    alt="wishlist-icon"
+                    className='icons'
+                  />
                 </BTN>
               )}
             </ListItem>
@@ -166,21 +184,32 @@ const Navbar = (props) => {
                       badgeContent={cart.products.length}
                       sx={{
                         "& .MuiBadge-badge": {
-                          backgroundColor: "transparent",
+                          backgroundColor: "hsl(353, 100%, 78%)",
                           color: "white",
-                        },
+                          marginRight:'-6px'
+                          },
                       }}
                     >
-                      <ShoppingBagOutlinedIcon />
+                      <img
+                        src="../../assets/icons/bag-outline.svg"
+                        alt="cart-icon"
+                        className='icons'
+                      />
                     </Badge>
                   }
                 />
               ) : (
                 <BTN
-                  onClick={() => dispatch(setErrorMessage("Please login to continue !!"))}
+                  onClick={() =>
+                    dispatch(setErrorMessage("Please login to continue !!"))
+                  }
                 >
                   {" "}
-                  <ShoppingBagOutlinedIcon />
+                  <img
+                    src="../../assets/icons/bag-outline.svg"
+                    alt="cart-icon"
+                    className='icons'
+                  />
                 </BTN>
               )}
             </ListItem>

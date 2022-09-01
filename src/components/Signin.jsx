@@ -25,7 +25,7 @@ const Form = styled.form``;
 const Title = styled.h2`
   text-align: center;
 `;
-const Signin = ({ handleSignup, handleForgetPass }) => {
+const Signin = ({ handleSignup }) => {
   const user = useSelector((state) => state.user);
   const [formData, setFormData] = useState();
   const [email, setEmail] = useState("");
@@ -69,9 +69,6 @@ const Signin = ({ handleSignup, handleForgetPass }) => {
         />
         <BTNSubmit type="submit">Sign in</BTNSubmit>
       </Form>
-      <BTNREGFORG onClick={() => handleForgetPass()}>
-        Forget password?
-      </BTNREGFORG>
       <BTNREGFORG onClick={() => handleSignup()}>Create an account</BTNREGFORG>
     </>
   );

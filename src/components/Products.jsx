@@ -10,13 +10,19 @@ const ProductsList = styled.ul`
   grid-template-columns: repeat(4, 1fr);
   margin-top: 3rem;
   row-gap: 2rem;
+  @media (max-width:1024px){
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width:768px){
+    grid-template-columns: repeat(1, 1fr);
+
+  }
 `;
 const Products = () => {
   const filters = useSelector((state) => state.filters);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const location = useLocation();
-  const searchedProducts = location.pathname.split("/")[2];
   useEffect(async () => {
     const tempProducts = await axios.get("http://localhost:2002/api/product");
     setProducts(tempProducts.data);

@@ -140,7 +140,7 @@ select {
   cursor: pointer;
 }
 .nav-link:hover{
-  color: #c1e8ea;  
+  color: hsl(353, 100%, 78%);  
 }
 /* status-message */
 .status-message {
@@ -197,6 +197,27 @@ select {
     right: 0.2rem;
     cursor: pointer;
   }
+  ${'' /* scrollbar */}
+  ::-webkit-scrollbar {
+  width: 0.6rem;
+  border-radius: 1rem;
+  &-thumb {
+    background: black;
+    border-radius: 0.5rem;
+    &:hover {
+      background: hsl(353, 100%, 78%);
+    }
+  }
+}
+
+${'' /* icons */}
+.icons{
+  width:25px;
+  transition:0.5s all;
+  &:hover{
+    transform: scale(105%);
+  }
+}
 `;
 
 export const Button = styled.button`
@@ -205,7 +226,7 @@ export const Button = styled.button`
   cursor: pointer;
   transition: 0.5s all;
   &:hover {
-    color: #c1e8ea;
+    color: hsl(353, 100%, 78%);
     transform: scale(105%);
   }
 `;

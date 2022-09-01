@@ -8,11 +8,11 @@ import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import CopyrightOutlinedIcon from "@mui/icons-material/CopyrightOutlined";
-import AnchorLink from "./AnchorLink";
 const FooterX = styled.footer`
   margin-top: 5rem;
-  background: #c1e8ea;
+  background: rgb(33,33,33);
   font-family: ${(props) => props.fontFamily};
+  color:white;
 `;
 
 const List = styled.ul`
@@ -20,6 +20,7 @@ const List = styled.ul`
   margin: 1rem auto;
   & li:nth-of-type(1) {
     font-weight: 700;
+    color:hsl(353, 100%, 78%);
   }
   &:where(:not(:nth-of-type(1))) {
     & li:where(:not(:nth-of-type(1))) {
@@ -49,7 +50,7 @@ const ListItem = styled.li`
     margin: 0 0.25rem;
     transition: 0.5s all;
     &:hover {
-      color: rgba(243, 178, 194, 0.6);
+      color:hsl(353, 100%, 78%);
     }
   }
 `;

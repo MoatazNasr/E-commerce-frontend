@@ -1,8 +1,6 @@
 import React , {useState} from "react";
 import styled from "styled-components";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-
-
 const H1 = styled.h1`
   text-align: center;
   margin: 2rem 0;
@@ -27,7 +25,7 @@ const Button = styled.button.attrs({ type: "submit" })`
   background: transparent;
   &:hover {
     transform: translateX(10%);
-    color: #f3b2c2;
+    color: hsl(353, 100%, 78%);
   }
 `;
 const Input = styled.input`

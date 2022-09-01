@@ -60,15 +60,15 @@ export const addProductToCart = createAsyncThunk(
     let tempProducts = [];
     let localProducts = JSON.parse(window.localStorage.getItem("cartProducts"));
     if (truthyValue) {
-      localProducts = localProducts.map((productX) => {
+      localProducts = localProducts.map((filteredProduct) => {
         if (
-          productX.productID === product._id &&
-          productX.selectedSize === product.selectedSize &&
-          productX.selectedColor === product.selectedColor
+          filteredProduct.productID === product._id &&
+          filteredProduct.selectedSize === product.selectedSize &&
+          filteredProduct.selectedColor === product.selectedColor
         ) {
-          productX.quantity += 1;
+          filteredProduct.quantity += 1;
         }
-        return productX;
+        return filteredProduct;
       });
       window.localStorage.setItem(
         "cartProducts",
@@ -111,30 +111,20 @@ export const addProductToCart = createAsyncThunk(
   }
 );
 
-
 export const removeProductFromCart = createAsyncThunk(
   "removefrom/cart",
   (product, thunkApi) => {
     const state = thunkApi.getState();
     const { token, id } = state.user;
     const { cartID } = state.cart;
-    const { productID, size, color } = product;
+    const { productID, selectedSize, selectedColor } = product;
     const api = userRequest(token);
     let localProducts = JSON.parse(window.localStorage.getItem("cartProducts"));
     api
-      .delete(`/cart/${cartID}/${productID}/${size}/${color}/${id}`)
+      .delete(
+        `/cart/${cartID}/${productID}/${selectedSize}/${selectedColor}/${id}`
+      )
       .then((res) => {
-        localProducts = localProducts.filter(
-          (productX) =>
-          productX.productID !== productID &&
-          productX.selectedSize !== size &&
-          productX.selectedColor !== color
-        );
-        console.log(localProducts)
-        window.localStorage.setItem(
-          "cartProducts",
-          JSON.stringify(localProducts)
-        );
         thunkApi.dispatch(
           removeFromCart({
             userID: res.data.userID,
@@ -143,6 +133,23 @@ export const removeProductFromCart = createAsyncThunk(
           })
         );
         thunkApi.dispatch(setSuccessfulMessage("Product removed from cart !!"));
+        let newFilteredStorage = localProducts.filter((filteredProduct) => {
+          let filterIt = false;
+          if (
+            filteredProduct.selectedColor === selectedColor &&
+            filteredProduct.selectedSize === selectedSize &&
+            filteredProduct.productID === productID
+          ) {
+             filterIt = true;
+          } 
+          if (!filterIt) {
+            return filteredProduct;
+          }
+        });
+            window.localStorage.setItem(
+              "cartProducts",
+              JSON.stringify(newFilteredStorage)
+            );
       })
       .catch(() => {
         thunkApi.dispatch(setErrorMessage("Try again !!"));

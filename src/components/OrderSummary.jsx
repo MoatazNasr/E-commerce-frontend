@@ -33,11 +33,12 @@ const BTN = styled(Button)`
     background: white;
   }
 `;
-const OrderSummary = ({cart}) => {
+const OrderSummary = ({changeOrderSummary,cart}) => {
   const [total, setTotal] = useState(0);
   useEffect(() => {
     setTotal(cartTotal());
-  },[cart]);
+    console.log(total)
+  },[changeOrderSummary,total,cart]);
   return (
     <Div>
       <Title className="fs-600">ORDER SUMMARY</Title>

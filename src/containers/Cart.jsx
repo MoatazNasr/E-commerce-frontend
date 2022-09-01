@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { Button } from "../styles/GlobalStyles";
@@ -40,6 +40,7 @@ const Products = styled.div`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const [changeOrderSummary,setChangeOrderSummary] = useState(false)
   const handleSetImage = (product) => {
     let image = "";
     product.details.forEach((details) => {
@@ -70,10 +71,11 @@ const Cart = () => {
                     quantity={product.quantity}
                     key={index}
                     imgSrc={handleSetImage(product)}
+                    setChangeOrderSummary={setChangeOrderSummary}
                   />
                 ))}
             </Products>
-            <OrderSummary cart={cart} />
+            <OrderSummary cart={cart} changeOrderSummary={changeOrderSummary}/>
           </Div>
         ) : (
           <Title className="fs-600">Your Cart Is Empty</Title>
