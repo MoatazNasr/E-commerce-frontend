@@ -1,20 +1,23 @@
-import React from 'react';
-import Categories from '../components/Categories';
-import Header from '../components/Header';
-import Collection from '../components/Collections';
-import Newsletter from '../components/Newsletter';
-import Footer from '../components/Footer';
+import React from "react";
+import Categories from "../components/Categories";
+import HomeHeader from "../components/HomeHeader";
+import Newsletter from "../components/Newsletter";
+import WhoAreWe from "../components/WhoAreWe";
+import Sale from "../components/Sale";
+import Footer from "../components/Footer";
 const Home = () => {
-
   return (
     <>
-      <Header />
-      <Categories />
-      <Collection/>
-      <Newsletter/>
-     <Footer/>
+      <HomeHeader />
+      <main>
+        <WhoAreWe />
+        <Sale />
+        <Categories />
+        <Newsletter />
+      </main>
+      <Footer />
     </>
-  )
+  );
 };
 
 export default Home;

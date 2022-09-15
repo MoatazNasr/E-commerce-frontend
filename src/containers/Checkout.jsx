@@ -33,7 +33,7 @@ const Checkout = () => {
       <Elements stripe={stripePromise}>
         <CheckoutStripe />
       </Elements>
-      <img src="assets/images/pexels-alena-shekhovtcova-6995902.jpg" alt="" />
+      <img src="assets/images/offer_img.jpg" alt="" />
     </Section>
   );
 };

@@ -6,6 +6,12 @@ import AnchorLink from "./AnchorLink";
 const Div = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1fr 1fr;
+  @media (max-width: 768px){
+    grid-template-columns: 1fr;
+    & img {
+      margin-bottom: 1rem;
+    }
+  }
   padding: 1rem;
   & .nav-link {
     position: relative;
@@ -16,9 +22,11 @@ const Div = styled.div`
   }
 `;
 const Div3 = styled.div`
-  align-self: center;
   & p {
-    margin: 0.5rem 0;
+    margin: 1rem 0;
+  }
+  @media (max-width: 768px){
+    padding:0 1rem;
   }
 `;
 const Color = styled.span`
@@ -50,6 +58,10 @@ const Li = styled.li`
     & span {
       font-weight: 700;
     }
+  }
+  @media (max-width: 768px){
+    text-align: left;
+    grid-template-columns: 1fr;
   }
 `;
 const Orders = () => {

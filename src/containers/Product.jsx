@@ -90,7 +90,7 @@ const MainSection = styled.section`
   & .swiper-button-next,
   .swiper-button-prev {
     position: absolute;
-    color: black !important ;
+    color: black;
   }
   & .swiper-button-next {
     right: 0.5rem;

@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Signup from "./Signup";
 import Signin from "./Signin";
-
+import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "../styles/GlobalStyles";
 const Section = styled.section`
   position: relative;
 `;
 const Div = styled.div`
   position: fixed;
-  top:175px;
-  right: ${(props) => (props.appear ? "0.03%" : "-100%")};
+  top: 175px;
+  right: ${(props) => (props.appear ? "0.03%" : "-120%")};
   background: white;
   padding: 4rem;
   border-radius: 0.5rem;
@@ -19,8 +20,16 @@ const Div = styled.div`
   display: grid;
   place-content: center;
 `;
-
-const UserForm = ({ appear }) => {
+const BTN = styled(Button)`
+  padding: 0;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  & svg {
+    font-size: 2rem;
+  }
+`;
+const UserForm = ({ appear ,setAppear}) => {
   const [signup, setSignup] = useState(false);
   const [signin, setSignin] = useState(true);
   const handleSignup = () => {
@@ -35,6 +44,7 @@ const UserForm = ({ appear }) => {
   return (
     <Section>
       <Div appear={appear}>
+      <BTN onClick={ ()=> setAppear(false)}><CloseIcon/></BTN>
         {signin && !signup  ? (
            <Signin handleSignup={handleSignup}/>
         ) :  signup && !signin && (

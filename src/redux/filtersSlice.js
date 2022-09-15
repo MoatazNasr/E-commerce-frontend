@@ -6,7 +6,7 @@ const filtersSlice = createSlice({
         colors: [],
         sizes: [],
         prices: [],
-        categories: null
+        categories: []
     },
     reducers: {
         updateFilters: (state, action) => {

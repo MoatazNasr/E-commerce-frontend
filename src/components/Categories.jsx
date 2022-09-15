@@ -6,44 +6,70 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 SwiperCore.use([Navigation, Pagination]);
-
-const Img = styled.img`
-  height: 750px;
-  width: 500px;
-  object-fit: cover;
-`;
-const H1 = styled.h1`
-  text-align: center;
-  margin: 2rem 0;
-`;
-const Section = styled.section`
-  position: relative;
-  margin: 0;
-  color: white;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  transition: 0.8s all;
-  & p {
-    background: black;
-  }
-  &:hover {
-    transform: scale(110%);
-  }
-`;
 const MainSection = styled.section`
+  @media (max-width: 425px) {
+    & .cat-swiper {
+      max-width: 100%;
+    }
+    & img {
+      width: 100%;
+      height: 425px;
+    }
+    & h1 {
+      font-size: 3.25rem;
+    }
+  }
   & .swiper-button-next,
   .swiper-button-prev {
     background-color: black;
     position: absolute;
     padding: 2rem;
-    color: #fff !important ;
+    color: #fff;
+    transition: 0.5s all;
+    @media (max-width: 425px) {
+      padding: 1.5rem;
+    }
   }
   & .swiper-button-next {
-    right: 3.7rem;
+    right: 0;
+    &:hover {
+      background-color: white;
+      color: hsl(353, 100%, 78%);
+    }
   }
   & .swiper-button-prev {
-    left: 3.7rem;
+    left: 0;
+    &:hover {
+      background-color: white;
+      color: hsl(353, 100%, 78%);
+    }
+  }
+`;
+const Img = styled.img`
+  height: 625px;
+  width: 500px;
+  object-fit: cover;
+  border-radius: 1rem 1rem 0 0;
+`;
+const H1 = styled.h1`
+  text-align: center;
+  margin: 2rem 0;
+`;
+const Div = styled.div`
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  color: white;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  transition: 0.5s all;
+  & p {
+    background: black;
+    border-radius: 0rem 0rem 1rem 1rem;
+  }
+  &:hover {
+    transform: scale(105%);
   }
 `;
 const Categories = () => {
@@ -51,58 +77,66 @@ const Categories = () => {
     <MainSection className="categories">
       <H1 className="fs-800">CATEGORIES</H1>
       <Swiper
-        style={{ width: "1300px", marginInline: "auto" }}
+        className="cat-swiper"
+        style={{ maxWidth: "90%" }}
         modules={[Pagination]}
-        spaceBetween={-40}
-        slidesPerView={2}
         loop
         navigation={true}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+        }}
       >
         <SwiperSlide>
-          <Section>
+          <Div>
             <Img
-              src="/assets/images/pexels-cottonbro-7494681.jpg"
+              src="/assets/images/emeline-light-down-puffer-jacket.jpg"
               alt="slider1-img"
             />
             <p className="fs-700">JACKETS</p>
-          </Section>
+          </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Section>
-            <Img
-              src="/assets/images/mafer-benitez-AFIwJaulrsY-unsplash.jpg"
-              alt="slider2-img"
-            />
-            <p className="fs-700">SWEATERS</p>
-          </Section>
+          <Div>
+            <Img src="/assets/images/WM034W-5-2.jpg" alt="slider2-img" />
+            <p className="fs-700">HOODIES</p>
+          </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Section>
+          <Div>
             <Img
-              src="/assets/images/pexels-photo-5886041.jpeg"
+              src="/assets/images/Bestselling-Pants-Favorite-Daughter-Favorite-Pant.webp"
               alt="slider3-img"
             />
-            <p className="fs-700">SHIRTS</p>
-          </Section>
+            <p className="fs-700">TROUSERS</p>
+          </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Section>
+          <Div>
             <Img
-              src="/assets/images/2017-New-Fashion-Winter-Coats-Women-Europe-Long-font-b-Jacket-b-font-font-b-Green.webp"
+              src="/assets/images/23816cc5-e6b8-470e-8ec2-31c7e45b063e1648012987995-MANGO-Women-Coats-7271648012987219-1.jpg"
               alt="slider4-img"
             />
             <p className="fs-700">COATS</p>
-          </Section>
+          </Div>
         </SwiperSlide>
-
         <SwiperSlide>
-          <Section>
-            <Img
-              src="/assets/images/pac-portrait-2022-06-07t134213767.jpg"
-              alt="slider4-img"
-            />
+          <Div>
+            <Img src="/assets/images/b1.jpg" alt="slider4-img" />
             <p className="fs-700">DRESSES</p>
-          </Section>
+          </Div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Div>
+            <Img src="/assets/images/b4.jpg" alt="slider4-img" />
+            <p className="fs-700">FOOTWEAR</p>
+          </Div>
         </SwiperSlide>
       </Swiper>
     </MainSection>

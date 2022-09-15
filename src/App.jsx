@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./containers/Home";
-import Shop from "./containers/Shop";
+import Collection from "./containers/Collection";
 import Wishlist from "./containers/Wishlist";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
@@ -38,7 +38,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/collection" element={<Collection />} />
         <Route path="/newarrivals" element={<NewArrivals />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />

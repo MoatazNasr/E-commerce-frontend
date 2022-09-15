@@ -139,9 +139,6 @@ select {
   transition: 0.5s all;
   cursor: pointer;
 }
-.nav-link:hover{
-  color: hsl(353, 100%, 78%);  
-}
 /* status-message */
 .status-message {
     position: fixed;
@@ -197,7 +194,7 @@ select {
     right: 0.2rem;
     cursor: pointer;
   }
-  ${'' /* scrollbar */}
+  ${"" /* scrollbar */}
   ::-webkit-scrollbar {
   width: 0.6rem;
   border-radius: 1rem;
@@ -210,12 +207,63 @@ select {
   }
 }
 
-${'' /* icons */}
+${"" /* icons */}
 .icons{
   width:25px;
   transition:0.5s all;
   &:hover{
     transform: scale(105%);
+  }
+}
+${"" /* add background to navbar */}
+.navbar-background-black{
+  background: black;
+}
+${"" /* swiper pagination */}
+.swiper {
+  position: relative;
+  &-pagination {
+    position: absolute;
+    top: 92%;
+  }
+  &-pagination-bullet {
+    opacity: 1;
+    background: white;
+    width: 0.75rem;
+    height: 0.75rem;
+    &:hover {
+      background-color: hsl(353, 100%, 78%);
+    }
+  }
+  &-pagination-bullet-active {
+    width: 2rem;
+    height: 0.65rem;
+    border-radius: 1rem;
+    &:hover{
+      background-color: white;
+    }
+}
+}
+${"" /* show, hide nav-buttons and classes*/}
+.open-nav-button,
+.close-nav-button {
+  display: none;
+}
+@media (max-width: 768px) {
+.open-nav-button,
+  .close-nav-button {
+    display: inline-block;
+    position: fixed;
+    right: 0.5rem;
+    background: none;
+    z-index: 99999;
+  }
+  .open-nav-button svg,
+  .close-nav-button svg {
+    font-size: var(--fs-800);
+  }
+  .close-nav-button svg {
+    color: white !important;
   }
 }
 `;

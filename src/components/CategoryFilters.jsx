@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-const H2 = styled.h2`
-  text-align: center;
-`;
+import { Button } from "../styles/GlobalStyles";
 const Div1 = styled.div``;
-const Div2 = styled.div`
+const CategoryButton = styled.button`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   margin: 0 4rem;
+  width: 56%;
   padding: 1rem;
   border: 1px solid black;
   background: white;
@@ -17,55 +16,85 @@ const Div2 = styled.div`
   transition: 0.5s all;
   & .category-number {
     transition: 0.5s all;
-    border: 1px solid rgba(0, 0, 0, 1);
     border-radius: 50%;
     min-width: 30px;
     aspect-ratio: 1/1;
     margin: 0 0.25rem;
-    background: black;
-    color: white;
+    background: rgba(220, 220, 220, 0.7);
+    color: black;
   }
   &:hover {
-    /* background-color: hsl(353, 100%, 78%); */
+    background-color: rgba(255, 143, 156, 0.5);
     border-color: hsl(353, 100%, 78%);
     & .category-number {
-      background: white;
-      color: black ;
-      border-color: hsl(353, 100%, 78%);
+      background: black;
+      color: white;
     }
   }
   & p {
     text-align: center;
   }
 `;
-
-const CategoryFilters = () => {
+const BTN = styled(Button)`
+  width: 55%;
+  z-index: 5;
+  margin: 0.25rem auto;
+  border-radius: 0.2rem;
+  box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
+  color: white;
+  background: black;
+  padding: 0.5rem 0;
+  position: relative;
+  &:hover {
+    background: white;
+  }
+`;
+const CategoryFilters = ({ productsCategoriesQuantity }) => {
   return (
     <>
       <Div1>
-        <Div2>
-          <p>Dresses</p> <p className="category-number">5</p>
-        </Div2>
-        <Div2>
+        <CategoryButton>
+          <span>DRESSES</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Dresses}
+          </span>
+        </CategoryButton>
+        <CategoryButton>
           {" "}
-          <p>Coats</p> <p className="category-number">5</p>
-        </Div2>
-        <Div2>
+          <span>COATS</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Coats}
+          </span>
+        </CategoryButton>
+        <CategoryButton>
           {" "}
-          <p>Jackets</p> <p className="category-number">5</p>
-        </Div2>
-        <Div2>
+          <span>JACKETS</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Jackets}
+          </span>
+        </CategoryButton>
+        <CategoryButton>
           {" "}
-          <p>Sweaters</p> <p className="category-number">5</p>
-        </Div2>
-        <Div2>
+          <span>HOODIES</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Hoodies}
+          </span>
+        </CategoryButton>
+        <CategoryButton>
           {" "}
-          <p>Trousers</p> <p className="category-number">5</p>
-        </Div2>
-        <Div2>
+          <span>TROUSERS</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Trousers}
+          </span>
+        </CategoryButton>
+        <CategoryButton>
           {" "}
-          <p>Footwear</p> <p className="category-number">5</p>
-        </Div2>
+          <span>FOOTWEAR</span>{" "}
+          <span className="category-number">
+            {productsCategoriesQuantity.Footwear}
+          </span>
+        </CategoryButton>
+        <BTN>SEE RESULTS</BTN>
       </Div1>
     </>
   );

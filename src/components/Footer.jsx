@@ -10,9 +10,11 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import CopyrightOutlinedIcon from "@mui/icons-material/CopyrightOutlined";
 const FooterX = styled.footer`
   margin-top: 5rem;
-  background: rgb(33,33,33);
   font-family: ${(props) => props.fontFamily};
-  color:white;
+  color: black;
+  & div {
+    border-top: 1px solid #e9e9e9;
+  }
 `;
 
 const List = styled.ul`
@@ -20,7 +22,7 @@ const List = styled.ul`
   margin: 1rem auto;
   & li:nth-of-type(1) {
     font-weight: 700;
-    color:hsl(353, 100%, 78%);
+    color: hsl(353, 100%, 78%);
   }
   &:where(:not(:nth-of-type(1))) {
     & li:where(:not(:nth-of-type(1))) {
@@ -40,9 +42,9 @@ const ListItem = styled.li`
   list-style: none;
   margin: 0 0.3rem;
   margin: 0.6rem 0;
-  & a{
-    color:inherit;
-    text-decoration:none;
+  & a {
+    color: inherit;
+    text-decoration: none;
     display: flex;
   }
   & span {
@@ -50,21 +52,30 @@ const ListItem = styled.li`
     margin: 0 0.25rem;
     transition: 0.5s all;
     &:hover {
-      color:hsl(353, 100%, 78%);
+      color: hsl(353, 100%, 78%);
     }
   }
 `;
 const Div = styled.div`
+  background: rgb(255, 255, 255);
   margin: 0 auto;
   width: 98%;
   &:nth-of-type(1) {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-  }
+    @media (max-width: 768px){
+      grid-template-columns: repeat(2, 1fr);
+      & ul {
+        margin: 1rem;
+      }
+    }
+    @media (max-width: 425px){
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }  
   &:nth-of-type(2) {
-    border-top: 1px solid rgba(0, 0, 0, 0.5);
     position: relative;
-    padding: 1rem 0;
+    padding: 0.25rem 0;
     & ul {
       display: flex;
       gap: 2rem;
@@ -83,6 +94,15 @@ const Div = styled.div`
     }
     & img {
       bottom: 1rem;
+    }
+    @media (max-width: 768px){
+      & ul {
+        gap: 0.25rem;
+        flex-direction: column;
+      }
+      & img {
+        bottom: 0.25rem;
+      }
     }
   }
 `;
@@ -122,10 +142,9 @@ const Footer = () => {
           <ListItem className="fs-300">Dresses </ListItem>
           <ListItem className="fs-300">Trousers </ListItem>
           <ListItem className="fs-300">Jackets </ListItem>
-          <ListItem className="fs-300">Sweaters </ListItem>
+          <ListItem className="fs-300">Hoodies </ListItem>
           <ListItem className="fs-300">Coats </ListItem>
           <ListItem className="fs-300">Footwear </ListItem>
-
         </List>
         <List>
           <ListItem>CONTACT</ListItem>
@@ -152,13 +171,10 @@ const Footer = () => {
           <ListItem className="fs-300">Data policy</ListItem>
           <ListItem className="fs-300">Cookies policy</ListItem>
         </List>
-        <img src="/assets/images/payment.png" alt='payments'/>
+        <img src="/assets/images/payment.png" alt="payments" />
         <p className="fs-300">
-            <CopyrightOutlinedIcon
-              fontSize="sm"
-              sx={{ margin: "0 0.125rem" }}
-            />
-            2022 MAY&M
+          <CopyrightOutlinedIcon fontSize="sm" sx={{ margin: "0 0.125rem" }} />
+          2022 MAY&M
         </p>
       </Div>
     </FooterX>

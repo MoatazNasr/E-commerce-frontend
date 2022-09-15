@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Button } from "../styles/GlobalStyles";
 import CloseIcon from "@mui/icons-material/Close";
 import Select from "./Select";
 import { colors, sizes, prices } from "../data";
-import {useDispatch } from 'react-redux';
-import {updateFilters} from '../redux/filtersSlice';
+import { useDispatch } from "react-redux";
+import { updateFilters } from "../redux/filtersSlice";
 const Rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -31,19 +30,19 @@ const BTN = styled(Button)`
   }
 `;
 const BTNSaveFilter = styled(BTN)`
-  padding: 0.75rem 2rem;
+  padding: 0.5rem 0;
   position: absolute;
+  width: 153.5px;
   right: 2rem;
   top: 80%;
   margin: 0;
   animation: none;
 `;
 const BTNClearFilter = styled(BTNSaveFilter)`
-  padding: 0.7rem;
-  top: 65%;
-  font-size:0.8rem;
-  display: flex;
-  align-items: center;
+  width: 100px;
+  padding: 0.5rem 0;
+  top: 68%;
+  text-align: center;
 `;
 const Down = keyframes`
   from {
@@ -73,7 +72,7 @@ const Div = styled.div`
   animation: ${(props) => (props.animation ? Down : Up)} 0.3s;
   border-bottom: 1px solid black;
 `;
-const Filters = () => {
+const ColorSizePriceFilters = () => {
   const [filter, setFilters] = useState(false);
   const [animation, setAnimation] = useState(false);
   const [color, setColors] = useState([]);
@@ -93,7 +92,7 @@ const Filters = () => {
     setColors([]);
     setPrices([]);
     setSizes([]);
-    setClear(true);   
+    setClear(true);
   };
   const add = (state) => {
     const [arr, methodName] =
@@ -118,16 +117,19 @@ const Filters = () => {
       methodName(arr.filter((arrValue) => arrValue !== value));
     };
   };
-  const updateFiltersState= ()=>{
-    dispatch(updateFilters({colorState:color,sizeState:size,priceState:price}))
+  const updateFiltersState = () => {
+    dispatch(
+      updateFilters({ colorState: color, sizeState: size, priceState: price })
+    );
     hideFilters();
-  }
-  useEffect(()=>{
-
-    return ()=>{
-      dispatch(updateFilters({colorState: [],sizeState:[],priceState:[]}))
-    }
-  },[]);
+  };
+  useEffect(() => {
+    return () => {
+      dispatch(
+        updateFilters({ colorState: [], sizeState: [], priceState: [] })
+      );
+    };
+  }, []);
   return (
     <>
       {filter ? (
@@ -162,7 +164,7 @@ const Filters = () => {
             />
             {(color.length > 0 || price.length > 0 || size.length > 0) && (
               <BTNClearFilter onClick={() => clearFilters()}>
-                <DeleteOutlineOutlinedIcon /> CLEAR
+                CLEAR
               </BTNClearFilter>
             )}
             <BTNSaveFilter onClick={() => updateFiltersState()}>
@@ -175,13 +177,13 @@ const Filters = () => {
         </>
       ) : (
         <>
-        <BTN filterX={filter} onClick={() => showFilters()}>
-          <FilterListOutlinedIcon />
-        </BTN>
+          <BTN filterX={filter} onClick={() => showFilters()}>
+            <FilterListOutlinedIcon />
+          </BTN>
         </>
       )}
     </>
   );
 };
 
-export default Filters;
+export default ColorSizePriceFilters;

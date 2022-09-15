@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavLink } from "react-router-dom";
 import UserPassword from "../components/UserPassword";
 import UserData from "../components/UserData";
@@ -9,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { signoutUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import Orders from '../components/Orders';
+import WestIcon from '@mui/icons-material/West';
 const BTN = styled(Button)`
   width: 100%;
   color: black;
@@ -84,7 +84,7 @@ const Settings = () => {
   return (
     <Main>
       <NavLink className="nav-link" to={-1}>
-        <ArrowBackIcon /> <span>Back</span>
+        <WestIcon />
       </NavLink>
       <section className="section-content">
         <ul className="section-content-select">
