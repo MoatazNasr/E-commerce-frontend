@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import OrderSummary from "../components/OrderSummary";
@@ -6,22 +6,26 @@ import CartProduct from "../components/CartProduct";
 import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 const Section = styled.section`
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
 `;
-const Title = styled.h1`
+const H1 = styled.h1`
+  text-align: center;
+`;
+const Title = styled.h2`
   margin: 2rem 0;
   text-align: center;
 `;
 const Div = styled.div`
   margin: 2rem 0;
   position: relative;
-  &:nth-of-type(2) {
-    display: flex;
+  display: flex;
+  @media (max-width: 1024px) {
+    flex-direction: column;
   }
 `;
 const Products = styled.div`
-  flex: 3;
+ flex: 3;
 `;
 
 const Cart = () => {
@@ -38,9 +42,7 @@ const Cart = () => {
     <>
       <Navbar />
       <Section>
-        <Div>
-          <Title className="fs-700">Cart</Title>
-        </Div>
+        <H1 className="fs-800">CART</H1>
         {cart.products.length > 0 ? (
           <Div>
             <Products>
@@ -53,7 +55,6 @@ const Cart = () => {
                     price={product.price}
                     size={product.selectedSize}
                     color={product.selectedColor}
-                    quantity={product.quantity}
                     key={index}
                     imgSrc={handleSetImage(product)}
                     setChangeOrderSummary={setChangeOrderSummary}

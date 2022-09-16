@@ -18,7 +18,7 @@ const Nav = styled.nav`
   position: ${(props) => (props.position ? "fixed" : "none")};
   top: 0;
   left: ${(props) => (props.openNav ? "0.03%" : "-120%")};
-  z-index: 6;
+  z-index: 10;
   width: 100%;
   padding: 1.25rem 0;
   transition: 1s all;
@@ -54,7 +54,7 @@ const Nav = styled.nav`
         text-align: center;
         color: white;
         & li {
-          margin: 0.5rem 0;
+          margin: 0.25rem 0;
           & a {
             color: white !important;
           }
@@ -117,7 +117,7 @@ const Navbar = (props) => {
     return () => {
       window.removeEventListener("resize", resizeFunction);
     };
-  });
+  },[]);
   useEffect(() => {
     if (location.pathname === "/" && windowWidth > 768) {
       const scrollFunction = () => {

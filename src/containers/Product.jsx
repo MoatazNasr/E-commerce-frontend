@@ -21,7 +21,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 SwiperCore.use([Navigation, Pagination]);
-
 const Div1 = styled.div`
   display: flex;
   justify-content: center;
@@ -30,11 +29,41 @@ const Div1 = styled.div`
   position: relative;
   & img {
     max-width: 40%;
+    border-radius: 0.2rem;
   }
   & .swiper {
     max-width: 40%;
     & img {
       max-width: 100%;
+    }
+  }
+  & > div {
+    margin: 1rem 0;
+  }
+  & > div:nth-of-type(1) {
+    & h3 {
+      text-align: center;
+      padding: 0.5rem;
+      width: 70px;
+      margin: 0 0;
+      color: white;
+      border-radius: 0.2rem;
+      background-color: hsl(353, 100%, 78%);
+    }
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    & .swiper {
+      max-width: 100%;
+    }
+    & img {
+      max-width: 100%;
+    }
+    & > div:nth-of-type(1) {
+      & h3 {
+        margin: 0 auto;
+      }
     }
   }
 `;
@@ -53,19 +82,35 @@ const BTNCart = styled(Button)`
 const BTNWishlist = styled(Button)`
   margin-left: 2rem;
 `;
-const Div2 = styled.div`
-  margin: 2rem 0;
-`;
 const Title = styled.h1``;
 const Description = styled.p`
   margin: 1rem 0;
   max-width: 70ch;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
-const Price = styled.p``;
+const Price = styled.p`
+  & .price-after-sale {
+    color: #649d66;
+    margin-left: 1.5rem;
+  }
+  & .price-before-sale {
+    color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    &::before {
+      content: "";
+      width: 100%;
+      position: absolute;
+      top: 1.5rem;
+      border-bottom: 2px solid black;
+    }
+  }
+`;
 const Color = styled(Button)`
   width: 20px;
   aspect-ratio: 1/1;
-  margin: 0 0.25rem;
+  margin: 0.5rem 0.25rem;
   position: relative;
   top: ${(props) => (props.color === "White" ? "-0.1rem" : "none")};
   background-color: ${(props) => props.color};
@@ -76,7 +121,7 @@ const Color = styled(Button)`
 const Size = styled(Button)`
   min-width: 40px;
   aspect-ratio: 1/1;
-  margin: 0 0.25rem;
+  margin: 1rem 0.25rem;
   border: 1px solid rgba(0, 0, 0, 1);
   border-radius: 50%;
   &:hover {
@@ -125,6 +170,10 @@ const Product = () => {
       dispatch(
         addProductToCart({
           ...product.data,
+          price:
+            (product.data.feature === "sale"
+              ? product.data.price - product.data.price * 0.4
+              : product.data.price),
           selectedColor: productDetails.color,
           selectedSize: size,
         })
@@ -154,7 +203,7 @@ const Product = () => {
       <Navbar />
       {productDetails && (
         <MainSection>
-          <Div1>
+          <Div1 feature={product.data.feature}>
             {productDetails.images.length > 1 ? (
               <Swiper
                 modules={[Pagination]}
@@ -174,11 +223,27 @@ const Product = () => {
             ) : (
               <img src={productDetails.images[0]} alt="product-img" />
             )}
-            <Div2>
+            <div>
+              {product.data.feature !== "none" && (
+                <h3>{product.data.feature.toLocaleUpperCase()}</h3>
+              )}
               <Title className="fs-700">{product.data.title}</Title>
               <Description className="fs-300">{product.data.desc}</Description>
-              <Price className="fs-600">${product.data.price}</Price>
-              <Div2>
+              <Price className="fs-600">
+                {product.data.feature === "sale" ? (
+                  <>
+                    <span className="price-before-sale">
+                      ${product.data.price}
+                    </span>
+                    <span className="price-after-sale">
+                      ${product.data.price - product.data.price * 0.4}
+                    </span>
+                  </>
+                ) : (
+                  <>${product.data.price}</>
+                )}
+              </Price>
+              <div>
                 {product.data.details.map((product, index) => (
                   <Color
                     key={index + Math.random()}
@@ -187,8 +252,8 @@ const Product = () => {
                     onClick={(e) => handleChangeColor(e)}
                   />
                 ))}
-              </Div2>
-              <Div2>
+              </div>
+              <div>
                 {productDetails.sizes.map((btnSize, index) => (
                   <Size
                     onClick={() => handleSize(btnSize["size"])}
@@ -198,12 +263,12 @@ const Product = () => {
                     {btnSize["size"]}
                   </Size>
                 ))}
-              </Div2>
+              </div>
               <BTNCart onClick={() => handleAddToCart()}>ADD TO CART</BTNCart>
               <BTNWishlist onClick={() => handleWishlist()}>
                 {inWishlist ? <FavoriteOutlinedIcon /> : <FavoriteBorderIcon />}
               </BTNWishlist>
-            </Div2>
+            </div>
           </Div1>
         </MainSection>
       )}

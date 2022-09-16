@@ -16,7 +16,7 @@ const ProductsList = styled.ul`
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 768px) {
+  @media (max-width: 425px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;

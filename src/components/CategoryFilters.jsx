@@ -1,44 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Button } from "../styles/GlobalStyles";
-const Div1 = styled.div``;
-const CategoryButton = styled.button`
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  margin: 0 4rem;
-  width: 56%;
-  padding: 1rem;
-  border: 1px solid black;
-  background: white;
-  margin-top: 0.25rem;
-  border-radius: 0.25rem;
-  transition: 0.5s all;
-  & .category-number {
-    transition: 0.5s all;
-    border-radius: 50%;
-    min-width: 30px;
-    aspect-ratio: 1/1;
-    margin: 0 0.25rem;
-    background: rgba(220, 220, 220, 0.7);
-    color: black;
-  }
-  &:hover {
-    background-color: rgba(255, 143, 156, 0.5);
-    border-color: hsl(353, 100%, 78%);
-    & .category-number {
-      background: black;
-      color: white;
-    }
-  }
-  & p {
-    text-align: center;
-  }
-`;
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateFilters } from "../redux/filtersSlice";
+import CategoryButton from "./CategoryButton";
 const BTN = styled(Button)`
   width: 55%;
   z-index: 5;
-  margin: 0.25rem auto;
+  margin: 0.5rem auto;
   border-radius: 0.2rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
   color: white;
@@ -49,54 +19,73 @@ const BTN = styled(Button)`
     background: white;
   }
 `;
+const SaveBTN = styled(BTN)``;
+const ClearBTN = styled(BTN)`
+  display: block;
+  width: 100px;
+`;
+const categoriesArray = [
+  "Dresses",
+  "Coats",
+  "Jackets",
+  "Hoodies",
+  "Trousers",
+  "Footwear",
+];
 const CategoryFilters = ({ productsCategoriesQuantity }) => {
+  const [categories, setCategories] = useState([]);
+  const filters = useSelector((state) => state.filters);
+  const dispatch = useDispatch();
+  const categoryExists = (category) => {
+    return categories.includes(category);
+  };
+  const addACategory = (category) => {
+    let tempCategories = [];
+    tempCategories.push(category);
+    tempCategories = tempCategories.concat(categories);
+    setCategories(tempCategories);
+  };
+  const removeCategory = (category) => {
+    let tempCategories = categories.filter((cat) => cat !== category);
+    setCategories(tempCategories);
+  };
+  const addCategories = () => {
+    dispatch(
+      updateFilters({
+        colorState: filters.colors,
+        sizeState: filters.sizes,
+        priceState: filters.prices,
+        categoriesState: categories,
+      })
+    );
+  };
+  const clearCategories = () => {
+    setCategories([]);
+  };
   return (
-    <>
-      <Div1>
-        <CategoryButton>
-          <span>DRESSES</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Dresses}
-          </span>
-        </CategoryButton>
-        <CategoryButton>
-          {" "}
-          <span>COATS</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Coats}
-          </span>
-        </CategoryButton>
-        <CategoryButton>
-          {" "}
-          <span>JACKETS</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Jackets}
-          </span>
-        </CategoryButton>
-        <CategoryButton>
-          {" "}
-          <span>HOODIES</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Hoodies}
-          </span>
-        </CategoryButton>
-        <CategoryButton>
-          {" "}
-          <span>TROUSERS</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Trousers}
-          </span>
-        </CategoryButton>
-        <CategoryButton>
-          {" "}
-          <span>FOOTWEAR</span>{" "}
-          <span className="category-number">
-            {productsCategoriesQuantity.Footwear}
-          </span>
-        </CategoryButton>
-        <BTN>SEE RESULTS</BTN>
-      </Div1>
-    </>
+    <div>
+      {categoriesArray.map((aCategory, index) => (
+        <CategoryButton
+          addCategory={addACategory}
+          removeCategory={removeCategory}
+          aCategory={aCategory}
+          isActive={categoryExists(aCategory)}
+          key={Math.random() + index}
+          children={
+            <>
+              <span>{aCategory.toLocaleUpperCase()}</span>
+              <span className="category-number">
+                {productsCategoriesQuantity[aCategory]}
+              </span>
+            </>
+          }
+        />
+      ))}
+      <SaveBTN onClick={() => addCategories()}>SEE RESULTS</SaveBTN>
+      {categories.length > 0 && (
+        <ClearBTN onClick={() => clearCategories()}>CLEAR</ClearBTN>
+      )}
+    </div>
   );
 };
 

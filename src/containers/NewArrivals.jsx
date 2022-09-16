@@ -5,29 +5,34 @@ import Footer from "../components/Footer";
 import styled from "styled-components";
 import Filters from "../components/Filters";
 
-const Div = styled.div`
-  display: grid;
-  grid-template-columns: 0.75fr 3fr;
+const H1 = styled.h1`
   text-align: center;
-  & h2 {
-    margin-top: 2rem;
+`;
+const Section = styled.section`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  text-align: center;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `;
 const NewArrivals = () => {
-  const [productsCategoriesQuantity, setProductsCategoriesQuantity] = useState({});
-  console.log(productsCategoriesQuantity)
+  const [productsCategoriesQuantity, setProductsCategoriesQuantity] = useState(
+    {}
+  );
   return (
     <>
       <Navbar />
-      <Div>
-        <div>
-          <h2>Filters</h2>
-          <Filters productsCategoriesQuantity={productsCategoriesQuantity}/>
-        </div>
-        <div>
-          <Products setProductsCategoriesQuantity={setProductsCategoriesQuantity} newProduct={true}/>
-        </div>
-      </Div>
+      <H1 className="fs-800" style={{ textAlign: "center" }}>
+        NEW ARRIVALS
+      </H1>
+      <Section>
+        <Filters productsCategoriesQuantity={productsCategoriesQuantity} />
+        <Products
+          setProductsCategoriesQuantity={setProductsCategoriesQuantity}
+          newProduct={true}
+        />
+      </Section>
       <Footer />
     </>
   );

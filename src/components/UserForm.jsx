@@ -15,7 +15,7 @@ const Div = styled.div`
   padding: 4rem;
   border-radius: 0.5rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
-  z-index: 6;
+  z-index: 11;
   transition: 1s all;
   display: grid;
   place-content: center;

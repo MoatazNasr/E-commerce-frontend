@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Select from "./Select";
 import { colors, sizes, prices } from "../data";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { updateFilters } from "../redux/filtersSlice";
 const Rotate = keyframes`
   from {
@@ -17,9 +18,9 @@ const Rotate = keyframes`
 `;
 const BTN = styled(Button)`
   margin: 1rem 1rem 2rem 0;
-  position: relative;
-  z-index: 5;
-  top: 1rem;
+  position: absolute;
+  top: -4rem;
+  z-index: 6;
   animation: ${(props) => (props.filterX ? Rotate : Rotate)} 0.2s;
   border-radius: 0.2rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5);
@@ -29,19 +30,28 @@ const BTN = styled(Button)`
     background: white;
   }
 `;
+const CloseBTN = styled(BTN)`
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  @media (max-width: 768px) {
+    top: 0.75rem;
+    left: 0.5rem;
+  }
+`;
 const BTNSaveFilter = styled(BTN)`
   padding: 0.5rem 0;
   position: absolute;
   width: 153.5px;
   right: 2rem;
-  top: 80%;
+  top: 75%;
   margin: 0;
   animation: none;
 `;
 const BTNClearFilter = styled(BTNSaveFilter)`
   width: 100px;
   padding: 0.5rem 0;
-  top: 68%;
+  top: 87%;
   text-align: center;
 `;
 const Down = keyframes`
@@ -49,36 +59,41 @@ const Down = keyframes`
     top:-100rem;
   }
   to {
-    top:7rem;
+    top:0rem;
   }
 `;
 const Up = keyframes`
   from {
-    top:7rem;
+    top:0rem;
   }
   to {
     top:-100rem;
   }
 `;
 const Div = styled.div`
-  position: absolute;
+  position: fixed;
   background: white;
-  z-index: 5;
+  z-index: 6;
   left: 0;
-  top: 7rem;
+  top: 0rem;
   height: max-content;
   width: 100%;
   display: flex;
   animation: ${(props) => (props.animation ? Down : Up)} 0.3s;
-  border-bottom: 1px solid black;
+  @media (max-width: 768px) {
+    padding: 2rem 0;
+    height: 100vh;
+  }
 `;
 const ColorSizePriceFilters = () => {
+  const filters = useSelector((state) => state.filters);
   const [filter, setFilters] = useState(false);
   const [animation, setAnimation] = useState(false);
   const [color, setColors] = useState([]);
   const [size, setSizes] = useState([]);
   const [price, setPrices] = useState([]);
   const [clear, setClear] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const dispatch = useDispatch();
   const showFilters = () => {
     setTimeout(() => setFilters(true), 250);
@@ -119,17 +134,36 @@ const ColorSizePriceFilters = () => {
   };
   const updateFiltersState = () => {
     dispatch(
-      updateFilters({ colorState: color, sizeState: size, priceState: price })
+      updateFilters({
+        colorState: color,
+        sizeState: size,
+        priceState: price,
+        categoriesState: filters.categories,
+      })
     );
     hideFilters();
   };
   useEffect(() => {
     return () => {
       dispatch(
-        updateFilters({ colorState: [], sizeState: [], priceState: [] })
+        updateFilters({
+          colorState: [],
+          sizeState: [],
+          priceState: [],
+          categoriesState: filters.categories,
+        })
       );
     };
   }, []);
+  useEffect(() => {
+    const resizeFunction = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeFunction);
+    return () => {
+      window.removeEventListener("resize", resizeFunction);
+    };
+  },[]);
   return (
     <>
       {filter ? (
@@ -171,9 +205,9 @@ const ColorSizePriceFilters = () => {
               SEE RESULTS
             </BTNSaveFilter>
           </Div>
-          <BTN filterX={filter} onClick={() => hideFilters()}>
+          <CloseBTN filterX={filter} onClick={() => hideFilters()}>
             <CloseIcon />
-          </BTN>
+          </CloseBTN>
         </>
       ) : (
         <>

@@ -12,6 +12,9 @@ const stripePromise = loadStripe(
 const Section = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
   & img {
     height: 100vh;
     width: 100%;
@@ -30,10 +33,10 @@ const Checkout = () => {
   });
   return (
     <Section>
+      <img src="assets/images/offer_img.jpg" alt="" />
       <Elements stripe={stripePromise}>
         <CheckoutStripe />
       </Elements>
-      <img src="assets/images/offer_img.jpg" alt="" />
     </Section>
   );
 };

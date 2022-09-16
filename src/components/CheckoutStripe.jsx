@@ -6,7 +6,15 @@ import { Button } from "../styles/GlobalStyles";
 import InputLabel from "./Input&Label";
 import { userRequest } from "../utils/apiCallMethods";
 import cartTotal from "../utils/cartTotal";
+import WestIcon from "@mui/icons-material/West";
+import AnchorLink from "./AnchorLink";
 const Section = styled.section`
+  & > a {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+  }
 `;
 const BTN = styled(Button)`
   margin: 3rem;
@@ -45,10 +53,21 @@ const CARD_OPTIONS = {
     },
   },
 };
+const SuccessfulPayment = styled.div`
+  height: 70vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  & button {
+    padding: 0.75rem 2rem;
+
+  }
+`;
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [successfulREQ, setSUCCREQ] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -57,6 +76,7 @@ const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
@@ -89,6 +109,7 @@ const CheckoutForm = () => {
           });
           if (successfulOrder) {
             setSUCCREQ(true);
+            setLoading(false);
           }
         }
       } catch (err) {
@@ -116,9 +137,10 @@ const CheckoutForm = () => {
   };
   return (
     <Section>
+      <AnchorLink linkTo={"/cart"} children={<WestIcon fontSize="large" />} />
       {!successfulREQ ? (
         <div>
-          <Title className="fs-700">Checkout</Title>
+          <Title className="fs-800">Checkout</Title>
           <Form onSubmit={handleSubmit}>
             <InputLabel
               name="country"
@@ -153,11 +175,20 @@ const CheckoutForm = () => {
               onChange={(e) => handleAddress(e)}
             />
             <CardElement options={CARD_OPTIONS} />
-            <BTN type="submit">PAY</BTN>
+            <BTN type="submit">
+              {!loading && !successfulREQ ? "PAY" : "LOADING..."}
+            </BTN>
           </Form>
         </div>
       ) : (
-        <div>Successful Payment Congrats!</div>
+        <SuccessfulPayment className="fs-500">
+          Successful Payment <br /> Thank you for choosing MAY&M
+          <AnchorLink
+            linkTo={"/collection"}
+            children={<BTN>CONTINUE SHOPPING</BTN>}
+            passedClassName="fs-400"
+          />
+        </SuccessfulPayment>
       )}
     </Section>
   );

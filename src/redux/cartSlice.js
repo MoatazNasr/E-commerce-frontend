@@ -125,6 +125,23 @@ export const removeProductFromCart = createAsyncThunk(
         `/cart/${cartID}/${productID}/${selectedSize}/${selectedColor}/${id}`
       )
       .then((res) => {
+        let newFilteredStorage = localProducts.filter((filteredProduct) => {
+          let filterIt = false;
+          if (
+            filteredProduct.selectedColor === selectedColor &&
+            filteredProduct.selectedSize === selectedSize &&
+            filteredProduct.productID === productID
+          ) {
+            filterIt = true;
+          }
+          if (!filterIt) {
+            return filteredProduct;
+          }
+        });
+        window.localStorage.setItem(
+          "cartProducts",
+          JSON.stringify(newFilteredStorage)
+        );
         thunkApi.dispatch(
           removeFromCart({
             userID: res.data.userID,
@@ -133,23 +150,6 @@ export const removeProductFromCart = createAsyncThunk(
           })
         );
         thunkApi.dispatch(setSuccessfulMessage("Product removed from cart !!"));
-        let newFilteredStorage = localProducts.filter((filteredProduct) => {
-          let filterIt = false;
-          if (
-            filteredProduct.selectedColor === selectedColor &&
-            filteredProduct.selectedSize === selectedSize &&
-            filteredProduct.productID === productID
-          ) {
-             filterIt = true;
-          } 
-          if (!filterIt) {
-            return filteredProduct;
-          }
-        });
-            window.localStorage.setItem(
-              "cartProducts",
-              JSON.stringify(newFilteredStorage)
-            );
       })
       .catch(() => {
         thunkApi.dispatch(setErrorMessage("Try again !!"));

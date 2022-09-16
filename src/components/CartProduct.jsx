@@ -7,10 +7,17 @@ import { removeProductFromCart } from "../redux/cartSlice";
 const Product = styled.div`
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr;
+  margin: 2rem;
   & img {
     max-width: 300px;
   }
-  margin: 2rem;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;    
+    text-align: center;
+    & img {
+      max-width:100%;
+    }
+  }
 `;
 const BTN = styled(Button)`
   margin: 0 3rem;
@@ -37,6 +44,10 @@ const Color = styled.span`
 const Details = styled.ul`
   padding: 0;
   margin: 1.75rem 1rem;
+  @media (max-width: 768px) {
+    margin:0 1rem;
+    font-size: clamp(1rem, 3vw, 1.75rem);
+  }
 `;
 const ProductDetail = styled.li`
   list-style: none;
@@ -52,6 +63,9 @@ const ProductDetail = styled.li`
 `;
 const Transfer = styled.div`
   margin-top: 2rem;
+  @media (max-width: 768px) {
+    margin:0;
+  }
 `;
 const ProductDetailsBTN = styled(BTN)`
   display: flex;
@@ -65,6 +79,9 @@ const ProductDetailsBTN = styled(BTN)`
   }
   & a {
     color: black;
+  }
+  @media (max-width: 768px) {
+    margin: 0 auto ;  
   }
 `;
 const RemoveFromCart = styled(ProductDetailsBTN)``;
@@ -82,17 +99,13 @@ const CartProduct = ({
   let [productQuantity, setProductQuantity] = useState(0);
   const dispatch = useDispatch();
   const incproductQuantity = () => {
-    setProductQuantity((prevQuan) => {
-      return prevQuan + 1;
-    });
+    setProductQuantity((prevQuan) => prevQuan + 1);
     setChangeOrderSummary((prevValue) => !prevValue);
   };
   const decproductQuantity = () => {
     setProductQuantity((prevQuan) => {
       if (prevQuan === 1) return 1;
-      else {
-        return prevQuan - 1;
-      }
+      else return prevQuan - 1;
     });
     setChangeOrderSummary((prevValue) => !prevValue);
   };
@@ -105,6 +118,9 @@ const CartProduct = ({
       })
     );
   };
+  useEffect(()=>{
+    setProductQuantity(0);
+  },[cart])
   useEffect(() => {
     let products = JSON.parse(window.localStorage.getItem("cartProducts"));
     if (productQuantity === 0) {
@@ -118,6 +134,7 @@ const CartProduct = ({
           else setProductQuantity(1);
         }
       });
+      // check when first render happens to the product , then check if that product has quantity in LocalS
     } else {
       products.forEach((product) => {
         if (
@@ -126,11 +143,12 @@ const CartProduct = ({
           product.selectedColor === color
         ) {
           product.quantity = productQuantity;
+          // issue in product.quantity value
         }
       });
       window.localStorage.setItem("cartProducts", JSON.stringify(products));
     }
-  }, [productQuantity,cart]);
+  }, [productQuantity]);
   return (
     <>
       <Product>
@@ -151,7 +169,7 @@ const CartProduct = ({
             {" "}
             <span>Price</span>: ${price}
           </ProductDetail>
-          <ProductDetail className="fs-500">
+          <ProductDetail className="fs-600">
             <button onClick={() => incproductQuantity()}>+</button>
             {productQuantity}
             <button onClick={() => decproductQuantity()}>-</button>

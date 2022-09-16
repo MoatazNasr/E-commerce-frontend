@@ -254,6 +254,7 @@ ${"" /* show, hide nav-buttons and classes*/}
   .close-nav-button {
     display: inline-block;
     position: fixed;
+    top: 1rem;
     right: 0.5rem;
     background: none;
     z-index: 99999;

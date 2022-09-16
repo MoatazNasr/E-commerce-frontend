@@ -8,7 +8,6 @@ import { getUserCart } from "../redux/cartSlice";
 import { getUserWishlist } from "../redux/wishlistSlice";
 const BTNSubmit = styled(Button)`
   width: 100%;
-  z-index: 5;
   border-radius: 0.2rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
   color: white;

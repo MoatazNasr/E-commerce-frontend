@@ -1,14 +1,14 @@
 const filterProducts = (products, filters) => {
   let filteredProducts = [];
   products.forEach((product) => {
-    let c, s, p;
-    c = s = p = true;
+    let colors, sizes, prices, categories;
+    colors = sizes = prices = categories = true;
     if (Object.values(filters)[0].length > 0)
-      c = Object.values(filters)[0].some((color) =>
+      colors = Object.values(filters)[0].some((color) =>
         product.details.some((productDetails) => productDetails.color === color)
       );
     if (Object.values(filters)[1].length > 0)
-      s = Object.values(filters)[1].some((size) =>
+      sizes = Object.values(filters)[1].some((size) =>
         product.details.some((productDetails) =>
           productDetails.sizes.some(
             (productDetailsObj) => productDetailsObj.size === size
@@ -16,10 +16,13 @@ const filterProducts = (products, filters) => {
         )
       );
     if (Object.values(filters)[2].length > 0)
-      p = Object.values(filters)[2].some(
+      prices = Object.values(filters)[2].some(
         (filteredPrice) => product.price <= filteredPrice
       );
-    if (c && s && p) filteredProducts.push(product);
+    if (Object.values(filters)[3].length > 0) categories = Object.values(filters)[3].some(
+        (filteredCategory) => product.category === filteredCategory
+      );    
+    if (colors && sizes && prices && categories) filteredProducts.push(product);
   });
   return filteredProducts;
 };

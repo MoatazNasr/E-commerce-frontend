@@ -3,13 +3,21 @@ import styled from "styled-components";
 import { Button } from "../styles/GlobalStyles";
 import AnchorLink from "./AnchorLink";
 import cartTotal from "../utils/cartTotal";
-
 const Div = styled.div`
   flex: 1;
   border: 2px solid rgba(0, 0, 0, 0.6);
   height: max-content;
   border-radius: 1rem;
   padding: 2rem 1.2rem;
+  @media (max-width: 1024px) {
+    flex: 2;
+    width: 50%;
+    margin:0 auto;    
+    text-align: center;
+  }
+  @media (max-width: 425px) {
+    width: 100%;
+  }
 `;
 const Title = styled.h2``;
 const SubTitle = styled.p`
@@ -37,8 +45,8 @@ const OrderSummary = ({changeOrderSummary,cart}) => {
   const [total, setTotal] = useState(0);
   useEffect(() => {
     setTotal(cartTotal());
-    console.log(total)
-  },[changeOrderSummary,total,cart]);
+    let products = JSON.parse(window.localStorage.getItem("cartProducts"));
+  },[changeOrderSummary, cart]);
   return (
     <Div>
       <Title className="fs-600">ORDER SUMMARY</Title>
