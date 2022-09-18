@@ -27,7 +27,7 @@ const Sidebar = styled.aside`
     display: flex;
     justify-content: center;
     text-align: center;
-    padding: 2rem 0;
+    padding: 0rem 0;
   }
   & h2 {
     margin-bottom: 3rem;

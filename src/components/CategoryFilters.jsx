@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 const BTN = styled(Button)`
   width: 55%;
   z-index: 5;
-  margin: 0.5rem auto;
+  margin: 0.3rem auto;
   border-radius: 0.2rem;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
   color: white;
