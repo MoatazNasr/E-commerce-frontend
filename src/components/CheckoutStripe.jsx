@@ -6,8 +6,8 @@ import { Button } from "../styles/GlobalStyles";
 import InputLabel from "./Input&Label";
 import { userRequest } from "../utils/apiCallMethods";
 import cartTotal from "../utils/cartTotal";
-import WestIcon from "@mui/icons-material/West";
 import AnchorLink from "./AnchorLink";
+
 const Section = styled.section`
   & > a {
     background: none;
@@ -137,7 +137,6 @@ const CheckoutForm = () => {
   };
   return (
     <Section>
-      <AnchorLink linkTo={"/cart"} children={<WestIcon fontSize="large" />} />
       {!successfulREQ ? (
         <div>
           <Title className="fs-800">Checkout</Title>
@@ -176,7 +175,7 @@ const CheckoutForm = () => {
             />
             <CardElement options={CARD_OPTIONS} />
             <BTN type="submit">
-              {!loading && !successfulREQ ? "PAY" : "LOADING..."}
+              {!loading && !successfulREQ ? "PAY" : "PROCESSING..."}
             </BTN>
           </Form>
         </div>

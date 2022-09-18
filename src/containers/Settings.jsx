@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import UserPassword from "../components/UserPassword";
 import UserData from "../components/UserData";
 import styled from "styled-components";
 import { Button } from "../styles/GlobalStyles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { signoutUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import Orders from '../components/Orders';
@@ -21,10 +21,8 @@ color: black;
 & a {
   color: black;
   position: absolute;
-  left: 2rem;
-  top: 2rem;
-  display: flex;
-  align-items: center;
+  left: 1rem;
+  top: 1rem;
 }
 & section {
   position: relative;
@@ -55,6 +53,7 @@ color: black;
 }
 `;
 const Settings = () => {
+  const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState(true);
   const [changePassword,setChangePassword] = useState(false);
   const [orders,setOrders] = useState(false);
@@ -81,10 +80,15 @@ const Settings = () => {
       setOrders(false);
     }
   }
+  useEffect(() => {
+    if (user.token === "") {
+      navigate(-1);
+    }
+  });
   return (
     <Main>
       <NavLink className="nav-link" to={-1}>
-        <WestIcon />
+        <WestIcon fontSize="large"/>
       </NavLink>
       <section className="section-content">
         <ul className="section-content-select">

@@ -12,7 +12,7 @@ const Sidebar = styled.aside`
     top: 0;
     z-index: 5;
     color: white;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     transition: 1s all;
     @media (max-width: 425px) {
       width: 100%;

@@ -59,7 +59,6 @@ const Select = ({
             clear={clear}
             setClear={setClear}
             stateTypes={stateTypes}
-
           />
           <span>
             {name === "Price" && <>Up To</>} {data}{" "}

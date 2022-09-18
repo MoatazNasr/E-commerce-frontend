@@ -8,6 +8,13 @@ import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import CopyrightOutlinedIcon from "@mui/icons-material/CopyrightOutlined";
+import {
+  updateCollectionFilters,
+  updateNewArrivalsFilters,
+} from "../redux/filtersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const FooterX = styled.footer`
   margin-top: 5rem;
   font-family: ${(props) => props.fontFamily};
@@ -63,16 +70,16 @@ const Div = styled.div`
   &:nth-of-type(1) {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    @media (max-width: 768px){
+    @media (max-width: 768px) {
       grid-template-columns: repeat(2, 1fr);
       & ul {
         margin: 1rem;
       }
     }
-    @media (max-width: 425px){
+    @media (max-width: 425px) {
       grid-template-columns: repeat(1, 1fr);
     }
-  }  
+  }
   &:nth-of-type(2) {
     position: relative;
     padding: 0.25rem 0;
@@ -95,7 +102,7 @@ const Div = styled.div`
     & img {
       bottom: 1rem;
     }
-    @media (max-width: 768px){
+    @media (max-width: 768px) {
       & ul {
         gap: 0.25rem;
         flex-direction: column;
@@ -107,6 +114,39 @@ const Div = styled.div`
   }
 `;
 const Footer = () => {
+  const { collectionFilters, newArrivalsFilters } = useSelector(
+    (state) => state.filters
+  );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const filtersUponLocation = (category) => {
+    if (location.pathname !== "/newarrivals") {
+      dispatch(
+        updateCollectionFilters({
+          colorState: collectionFilters.colors,
+          sizeState: collectionFilters.sizes,
+          priceState: collectionFilters.prices,
+          categoriesState: [category],
+        })
+      );
+      navigate("/collection")
+    } else {
+      dispatch(
+        updateNewArrivalsFilters({
+          colorState: newArrivalsFilters.colors,
+          sizeState: newArrivalsFilters.sizes,
+          priceState: newArrivalsFilters.prices,
+          categoriesState: [category],
+        })
+      );
+      navigate("/newarrivals")
+    }
+  };
+  const handleChooseCategory = (category) => {
+    filtersUponLocation(category);
+    window.scrollTo(0, 0);
+  };
   return (
     <FooterX fontFamily="Shadows Into Light, cursive">
       <Div>
@@ -139,12 +179,42 @@ const Footer = () => {
         </List>
         <List>
           <ListItem>INTERESTED IN</ListItem>
-          <ListItem className="fs-300">Dresses </ListItem>
-          <ListItem className="fs-300">Trousers </ListItem>
-          <ListItem className="fs-300">Jackets </ListItem>
-          <ListItem className="fs-300">Hoodies </ListItem>
-          <ListItem className="fs-300">Coats </ListItem>
-          <ListItem className="fs-300">Footwear </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Dresses")}
+          >
+            Dresses{" "}
+          </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Trousers")}
+          >
+            Trousers{" "}
+          </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Jackets")}
+          >
+            Jackets{" "}
+          </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Hoodies")}
+          >
+            Hoodies{" "}
+          </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Coats")}
+          >
+            Coats{" "}
+          </ListItem>
+          <ListItem
+            className="fs-300"
+            onClick={() => handleChooseCategory("Footwear")}
+          >
+            Footwear{" "}
+          </ListItem>
         </List>
         <List>
           <ListItem>CONTACT</ListItem>

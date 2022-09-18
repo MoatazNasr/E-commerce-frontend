@@ -7,7 +7,11 @@ import Select from "./Select";
 import { colors, sizes, prices } from "../data";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { updateFilters } from "../redux/filtersSlice";
+import {
+  updateCollectionFilters,
+  updateNewArrivalsFilters,
+} from "../redux/filtersSlice";
+import { useLocation } from "react-router-dom";
 const Rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -47,12 +51,19 @@ const BTNSaveFilter = styled(BTN)`
   top: 75%;
   margin: 0;
   animation: none;
+  @media (max-width: 425px) {
+    top: 78%;
+    right: 0rem;
+  }
 `;
 const BTNClearFilter = styled(BTNSaveFilter)`
   width: 100px;
   padding: 0.5rem 0;
   top: 87%;
   text-align: center;
+  @media (max-width: 425px) {
+    right: 0rem;
+  }
 `;
 const Down = keyframes`
   from {
@@ -86,15 +97,17 @@ const Div = styled.div`
   }
 `;
 const ColorSizePriceFilters = () => {
-  const filters = useSelector((state) => state.filters);
+  const { collectionFilters, newArrivalsFilters } = useSelector(
+    (state) => state.filters
+  );
   const [filter, setFilters] = useState(false);
   const [animation, setAnimation] = useState(false);
   const [color, setColors] = useState([]);
   const [size, setSizes] = useState([]);
   const [price, setPrices] = useState([]);
   const [clear, setClear] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const dispatch = useDispatch();
+  const location = useLocation();
   const showFilters = () => {
     setTimeout(() => setFilters(true), 250);
     setAnimation(true);
@@ -103,11 +116,31 @@ const ColorSizePriceFilters = () => {
     setTimeout(() => setAnimation(false), 200);
     setTimeout(() => setFilters(false), 250);
   };
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setColors([]);
     setPrices([]);
     setSizes([]);
+    if (location.pathname === "/collection") {
+      dispatch(
+        updateCollectionFilters({
+          colorState: [],
+          sizeState: [],
+          priceState: [],
+          categoriesState: collectionFilters.categories,
+        })
+      );
+    } else {
+      dispatch(
+        updateNewArrivalsFilters({
+          colorState: [],
+          sizeState: [],
+          priceState: [],
+          categoriesState: newArrivalsFilters.categories,
+        })
+      );
+    }
     setClear(true);
+    hideFilters();
   };
   const add = (state) => {
     const [arr, methodName] =
@@ -132,38 +165,39 @@ const ColorSizePriceFilters = () => {
       methodName(arr.filter((arrValue) => arrValue !== value));
     };
   };
-  const updateFiltersState = () => {
-    dispatch(
-      updateFilters({
-        colorState: color,
-        sizeState: size,
-        priceState: price,
-        categoriesState: filters.categories,
-      })
-    );
+  const handleFiltersState = () => {
+    if (location.pathname === "/collection") {
+      dispatch(
+        updateCollectionFilters({
+          colorState: color,
+          sizeState: size,
+          priceState: price,
+          categoriesState: collectionFilters.categories,
+        })
+      );
+    } else {
+      dispatch(
+        updateNewArrivalsFilters({
+          colorState: color,
+          sizeState: size,
+          priceState: price,
+          categoriesState: newArrivalsFilters.categories,
+        })
+      );
+    }
     hideFilters();
   };
   useEffect(() => {
-    return () => {
-      dispatch(
-        updateFilters({
-          colorState: [],
-          sizeState: [],
-          priceState: [],
-          categoriesState: filters.categories,
-        })
-      );
-    };
+    if (location.pathname === "/collection") {
+      setColors(collectionFilters.colors);
+      setSizes(collectionFilters.sizes);
+      setPrices(collectionFilters.prices);
+    } else {
+      setColors(newArrivalsFilters.colors);
+      setSizes(newArrivalsFilters.sizes);
+      setPrices(newArrivalsFilters.prices);
+    }
   }, []);
-  useEffect(() => {
-    const resizeFunction = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", resizeFunction);
-    return () => {
-      window.removeEventListener("resize", resizeFunction);
-    };
-  },[]);
   return (
     <>
       {filter ? (
@@ -197,11 +231,11 @@ const ColorSizePriceFilters = () => {
               stateTypes={price}
             />
             {(color.length > 0 || price.length > 0 || size.length > 0) && (
-              <BTNClearFilter onClick={() => clearFilters()}>
+              <BTNClearFilter onClick={() => handleClearFilters()}>
                 CLEAR
               </BTNClearFilter>
             )}
-            <BTNSaveFilter onClick={() => updateFiltersState()}>
+            <BTNSaveFilter onClick={() => handleFiltersState()}>
               SEE RESULTS
             </BTNSaveFilter>
           </Div>

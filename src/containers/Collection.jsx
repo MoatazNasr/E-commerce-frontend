@@ -7,9 +7,9 @@ import Filters from "../components/Filters";
 const H1 = styled.h1`
   text-align: center;
 `;
-const Section = styled.section`
+const Main = styled.main`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 4fr;
   text-align: center;
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -25,13 +25,13 @@ const Collection = () => {
       <H1 className="fs-800" style={{ textAlign: "center" }}>
         COLLECTION
       </H1>
-      <Section>
+      <Main>
         <Filters productsCategoriesQuantity={productsCategoriesQuantity} />
         <Products
           setProductsCategoriesQuantity={setProductsCategoriesQuantity}
           newProduct={false}
         />
-      </Section>
+      </Main>
       <Footer />
     </>
   );

@@ -4,6 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { updateCollectionFilters } from "../redux/filtersSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 SwiperCore.use([Navigation, Pagination]);
 const MainSection = styled.section`
@@ -73,6 +76,20 @@ const Div = styled.div`
   }
 `;
 const Categories = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleChooseCategory = (category) => {
+    dispatch(
+      updateCollectionFilters({
+        colorState: [],
+        sizeState: [],
+        priceState: [],
+        categoriesState: [category],
+      })
+    );
+    navigate("/collection");
+    window.scrollTo(0,0);
+  };
   return (
     <MainSection className="categories">
       <H1 className="fs-800">CATEGORIES</H1>
@@ -94,7 +111,7 @@ const Categories = () => {
         }}
       >
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Jackets")}>
             <Img
               src="/assets/images/emeline-light-down-puffer-jacket.jpg"
               alt="slider1-img"
@@ -103,13 +120,13 @@ const Categories = () => {
           </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Hoodies")}>
             <Img src="/assets/images/WM034W-5-2.jpg" alt="slider2-img" />
             <p className="fs-700">HOODIES</p>
           </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Trousers")}>
             <Img
               src="/assets/images/Bestselling-Pants-Favorite-Daughter-Favorite-Pant.webp"
               alt="slider3-img"
@@ -118,7 +135,7 @@ const Categories = () => {
           </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Coats")}>
             <Img
               src="/assets/images/23816cc5-e6b8-470e-8ec2-31c7e45b063e1648012987995-MANGO-Women-Coats-7271648012987219-1.jpg"
               alt="slider4-img"
@@ -127,13 +144,13 @@ const Categories = () => {
           </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Dresses")}>
             <Img src="/assets/images/b1.jpg" alt="slider4-img" />
             <p className="fs-700">DRESSES</p>
           </Div>
         </SwiperSlide>
         <SwiperSlide>
-          <Div>
+          <Div onClick={() => handleChooseCategory("Footwear")}>
             <Img src="/assets/images/b4.jpg" alt="slider4-img" />
             <p className="fs-700">FOOTWEAR</p>
           </Div>

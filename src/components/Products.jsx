@@ -1,12 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 import styled from "styled-components";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import filterProducts from "../utils/filterProducts.js";
-import countProductsCategories from '../utils/countProductsCategory.js'
-const ProductsList = styled.ul` 
+import countProductsCategories from "../utils/countProductsCategory.js";
+const ProductsList = styled.ul`
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -20,32 +20,59 @@ const ProductsList = styled.ul`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-const Products = ({setProductsCategoriesQuantity,newProduct}) => {
-  const filters = useSelector((state) => state.filters);
+const Products = ({ setProductsCategoriesQuantity, newProduct }) => {
+  const { collectionFilters, newArrivalsFilters } = useSelector(
+    (state) => state.filters
+  );
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+  const [collectionProducts, setCollectionProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const location = useLocation();
   useEffect(async () => {
     const tempProducts = await axios.get("http://localhost:2002/api/product");
     setProducts(tempProducts.data);
-    setProductsCategoriesQuantity(countProductsCategories(tempProducts.data,newProduct))
+    setProductsCategoriesQuantity(
+      countProductsCategories(tempProducts.data, newProduct)
+    );
   }, []);
   useEffect(() => {
-    const filterProductsResult = filterProducts(products, filters);
+    let filterProductsResult;
+    if (location.pathname === "/newarrivals") {
+      filterProductsResult = filterProducts(products, newArrivalsFilters);
+    } 
+    else {
+      filterProductsResult = filterProducts(products, collectionFilters);
+    }
     setFilteredProducts(filterProductsResult);
-  }, [filters, products]);
+  }, [collectionFilters, newArrivalsFilters, products]);
+  useEffect(() => {
+    let tempNewProducts = [];
+    let tempCollectionProducts = [];
+    filteredProducts.forEach((product) => {
+      if (product.feature === "new") tempNewProducts.push(product);
+      else tempCollectionProducts.push(product);
+    });
+    setNewProducts(tempNewProducts);
+    setCollectionProducts(tempCollectionProducts);
+  }, [filteredProducts]);
   return (
     <section>
+      {location.pathname === "/collection" &&
+        collectionProducts.length <= 0 && (
+          <h2 className="fs-700">NO PRODUCTS FOUND</h2>
+        )}
+      {location.pathname === "/newarrivals" && newProducts.length <= 0 && (
+        <h2 className="fs-700">NO PRODUCTS FOUND</h2>
+      )}
       <ProductsList>
-        {filteredProducts.map((product, key) => (
-          <Fragment key={key + Math.random()}>
-            {location.pathname === "/collection" ? (
-              <>{product.feature !== "new" && <ProductItem product={product} />}</>
-            ) : (
-              <>{product.feature === "new" && <ProductItem product={product} />}</>
-            )}
-          </Fragment>
-        ))}
+        {location.pathname === "/collection"
+          ? collectionProducts.map((product, index) => (
+              <ProductItem product={product} key={Math.random() + index} />
+            ))
+          : newProducts.map((product, index) => (
+              <ProductItem product={product} key={Math.random() + index} />
+            ))}
       </ProductsList>
     </section>
   );

@@ -156,7 +156,31 @@ export const removeProductFromCart = createAsyncThunk(
       });
   }
 );
-
+export const clearCartAsync = createAsyncThunk(
+  "remove/cart",
+  (product, thunkApi) => {
+    const state = thunkApi.getState();
+    const { token, id } = state.user;
+    const { cartID } = state.cart;
+    const api = userRequest(token);
+    api
+      .delete(`/cart/${cartID}/${id}`)
+      .then((res) => {
+        thunkApi.dispatch(
+          removeCart({
+            userID: res.data.userID,
+            cartID: res.data._id,
+            products: res.data.products,
+          })
+        );
+        window.localStorage.setItem("cartProducts", []);
+        thunkApi.dispatch(setSuccessfulMessage("Cart is cleared!!"));
+      })
+      .catch(() => {
+        thunkApi.dispatch(setErrorMessage("Try again !!"));
+      });
+  }
+);
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -176,8 +200,8 @@ const cartSlice = createSlice({
       state.products = action.payload.products;
     },
     removeCart: (state, action) => {
-      state.cartID = "";
-      state.userID = "";
+      state.userID = action.payload.userID;
+      state.cartID = action.payload.cartID;
       state.products = [];
     },
   },

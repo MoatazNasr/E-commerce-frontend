@@ -196,13 +196,14 @@ select {
   }
   ${"" /* scrollbar */}
   ::-webkit-scrollbar {
-  width: 0.6rem;
+  width: 0.5rem;
   border-radius: 1rem;
   &-thumb {
     background: black;
     border-radius: 0.5rem;
     &:hover {
       background: hsl(353, 100%, 78%);
+  
     }
   }
 }

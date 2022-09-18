@@ -1,16 +1,32 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import OrderSummary from "../components/OrderSummary";
+import CartSummary from "../components/CartSummary";
 import CartProduct from "../components/CartProduct";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
-const Section = styled.section`
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearCartAsync } from "../redux/cartSlice";
+import { Button } from "../styles/GlobalStyles";
+
+const Main = styled.main`
   width: 95%;
   margin: 0 auto;
 `;
 const H1 = styled.h1`
   text-align: center;
+`;
+const BTN = styled(Button)`
+  margin-left: 2rem;
+  z-index: 5;
+  border-radius: 0.2rem;
+  box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.7);
+  color: white;
+  background: black;
+  padding: 0.75rem 2rem;
+  &:hover {
+    background: white;
+  }
 `;
 const Title = styled.h2`
   margin: 2rem 0;
@@ -25,12 +41,15 @@ const Div = styled.div`
   }
 `;
 const Products = styled.div`
- flex: 3;
+  flex: 3;
 `;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const [changeOrderSummary,setChangeOrderSummary] = useState(false)
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [changeCartSummary, setChangeCartSummary] = useState(false);
   const handleSetImage = (product) => {
     let image = "";
     product.details.forEach((details) => {
@@ -38,11 +57,22 @@ const Cart = () => {
     });
     return image;
   };
+  const clearCart = () => {
+    dispatch(clearCartAsync());
+  };
+  useEffect(() => {
+    if (user.token === "") {
+      navigate(-1);
+    }
+  });
   return (
     <>
       <Navbar />
-      <Section>
+      <Main>
         <H1 className="fs-800">CART</H1>
+        {cart.products.length > 0 && (
+          <BTN onClick={() => clearCart()}>CLEAR CART</BTN>
+        )}
         {cart.products.length > 0 ? (
           <Div>
             <Products>
@@ -57,16 +87,16 @@ const Cart = () => {
                     color={product.selectedColor}
                     key={index}
                     imgSrc={handleSetImage(product)}
-                    setChangeOrderSummary={setChangeOrderSummary}
+                    setChangeCartSummary={setChangeCartSummary}
                   />
                 ))}
             </Products>
-            <OrderSummary cart={cart} changeOrderSummary={changeOrderSummary}/>
+            <CartSummary cart={cart} changeCartSummary={changeCartSummary} />
           </Div>
         ) : (
           <Title className="fs-600">Your Cart Is Empty</Title>
         )}
-      </Section>
+      </Main>
       <Footer />
     </>
   );

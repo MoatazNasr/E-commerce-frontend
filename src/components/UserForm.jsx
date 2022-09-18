@@ -4,7 +4,7 @@ import Signup from "./Signup";
 import Signin from "./Signin";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "../styles/GlobalStyles";
-const Section = styled.section`
+const Aside = styled.aside`
   position: relative;
 `;
 const Div = styled.div`
@@ -42,7 +42,7 @@ const UserForm = ({ appear ,setAppear}) => {
   };
 
   return (
-    <Section>
+    <Aside>
       <Div appear={appear}>
       <BTN onClick={ ()=> setAppear(false)}><CloseIcon/></BTN>
         {signin && !signup  ? (
@@ -51,7 +51,7 @@ const UserForm = ({ appear ,setAppear}) => {
           <Signup handleSignin={handleSignin} />
         )}
       </Div>
-    </Section>
+    </Aside>
   );
 };
 

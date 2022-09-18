@@ -41,14 +41,13 @@ const CheckBox = ({
       remove(e.target.name)(e.target.value);
     }
   };
-
   useEffect(() => {
     stateTypes.forEach((element) => {
       if (element === value) {
         setChecked(true);
       }
     });
-  }, [stateTypes]);
+  }, [stateTypes, value]);
 
   if (clear && checked) {
     setChecked(false);

@@ -109,6 +109,15 @@ const Navbar = (props) => {
   const showLogin = () => {
     setLoggedIn(!loggedIn);
   };
+  const scrollFunction = () => {
+    const navbarElement = document.getElementById("navbar");
+    if (window.scrollY >= 120 && location.pathname === "/") {
+      navbarElement.classList.add("navbar-background-black");
+    } else {
+      navbarElement.classList.remove("navbar-background-black");
+    }
+    setWindowHeight(window.scrollY);
+  };
   useEffect(() => {
     const resizeFunction = () => {
       setWindowWidth(window.innerWidth);
@@ -120,21 +129,12 @@ const Navbar = (props) => {
   },[]);
   useEffect(() => {
     if (location.pathname === "/" && windowWidth > 768) {
-      const scrollFunction = () => {
-        const navbarElement = document.getElementById("navbar");
-        if (window.scrollY >= 120 && location.pathname === "/") {
-          navbarElement.classList.add("navbar-background-black");
-        } else {
-          navbarElement.classList.remove("navbar-background-black");
-        }
-        setWindowHeight(window.scrollY);
-      };
       window.addEventListener("scroll", scrollFunction);
-      return () => {
-        window.removeEventListener("scroll", scrollFunction);
-      };
-    }
-  }, [windowWidth]);
+    };
+    return () => {
+      window.removeEventListener("scroll", scrollFunction);
+    };
+  },[]);
   useEffect(() => {
     if (user.token) {
       setLoggedIn(false);
