@@ -13,6 +13,7 @@ const Products = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 1rem;
+  padding: 0;
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
