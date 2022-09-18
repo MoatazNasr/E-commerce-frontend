@@ -6,14 +6,22 @@ import { Button } from "../styles/GlobalStyles";
 import InputLabel from "./Input&Label";
 import { userRequest } from "../utils/apiCallMethods";
 import cartTotal from "../utils/cartTotal";
-import AnchorLink from "./AnchorLink";
-
+import { useNavigate } from "react-router-dom";
 const Section = styled.section`
+  & > div {
+    text-align: center;
+    height: 100%;
+    place-content: center;
+    display: grid;
+  }
   & > a {
     background: none;
     border: none;
     color: black;
     cursor: pointer;
+  }
+  & .continue-shopping {
+    padding : 0.75rem 3rem;
   }
 `;
 const BTN = styled(Button)`
@@ -53,16 +61,6 @@ const CARD_OPTIONS = {
     },
   },
 };
-const SuccessfulPayment = styled.div`
-  height: 70vh;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  & button {
-    padding: 0.75rem 2rem;
-
-  }
-`;
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -74,6 +72,7 @@ const CheckoutForm = () => {
   const [address, setAddress] = useState("");
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -180,14 +179,12 @@ const CheckoutForm = () => {
           </Form>
         </div>
       ) : (
-        <SuccessfulPayment className="fs-500">
-          Successful Payment <br /> Thank you for choosing MAY&M
-          <AnchorLink
-            linkTo={"/collection"}
-            children={<BTN>CONTINUE SHOPPING</BTN>}
-            passedClassName="fs-400"
-          />
-        </SuccessfulPayment>
+        <div className="fs-500">
+          <p>
+            Successful Payment <br /> Thank you for choosing MAY&M
+          </p>
+          <BTN onClick={()=> navigate('/collection')} className="continue-shopping fs-400">CONTINUE SHOPPING</BTN>
+        </div>
       )}
     </Section>
   );

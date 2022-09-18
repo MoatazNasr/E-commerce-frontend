@@ -94,20 +94,20 @@ const CartProduct = ({
   size,
   price,
   imgSrc,
-  setChangeOrderSummary,
+  setChangeCartSummary,
 }) => {
   let [productQuantity, setProductQuantity] = useState(0);
   const dispatch = useDispatch();
   const incproductQuantity = () => {
     setProductQuantity((prevQuan) => prevQuan + 1);
-    setChangeOrderSummary((prevValue) => !prevValue);
+    setChangeCartSummary((prevValue) => !prevValue);
   };
   const decproductQuantity = () => {
     setProductQuantity((prevQuan) => {
       if (prevQuan === 1) return 1;
       else return prevQuan - 1;
     });
-    setChangeOrderSummary((prevValue) => !prevValue);
+    setChangeCartSummary((prevValue) => !prevValue);
   };
   const handleRemoveFromtCart = () => {
     dispatch(

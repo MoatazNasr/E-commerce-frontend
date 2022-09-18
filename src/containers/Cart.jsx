@@ -49,7 +49,7 @@ const Cart = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [changeCartSummary, setChangeCartSummary] = useState(false);
+  const [changeCartSummary, setChangeCartSummary] = useState(0);
   const handleSetImage = (product) => {
     let image = "";
     product.details.forEach((details) => {
