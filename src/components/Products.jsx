@@ -30,7 +30,7 @@ const Products = ({ setProductsCategoriesQuantity, newProduct }) => {
   const [products, setProducts] = useState([]);
   const location = useLocation();
   useEffect(async () => {
-    const tempProducts = await axios.get("http://localhost:2002/api/product");
+    const tempProducts = await axios.get("https://e-commerce-back-byqu.onrender.com/api/product");
     setProducts(tempProducts.data);
     setProductsCategoriesQuantity(
       countProductsCategories(tempProducts.data, newProduct)
