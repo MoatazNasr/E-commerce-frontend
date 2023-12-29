@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASEURL = "http://localhost:2002/api";
+const BASEURL = "https://e-commerce-back-byqu.onrender.com/api";
 
 export const publicRequest = axios.create({
   baseURL: BASEURL,
